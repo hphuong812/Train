@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 public class RailCreator : MonoBehaviour
 {
-    public CinemachinePath pathTrain_1;
+    private CinemachinePath pathTrain_1;
     public CinemachinePath StartRail;
     public GameObject PathContainer;
     public TrainController train;
@@ -15,6 +15,7 @@ public class RailCreator : MonoBehaviour
     private List<CinemachinePath> _listRails = new List<CinemachinePath>();
     private CinemachinePath ChechWaypoint;
     private  int currentWaypointIndex = 0;
+    private int indexCheck = 1;
     private bool canRun;
 
     private void Start()
@@ -70,9 +71,13 @@ public class RailCreator : MonoBehaviour
 
         CinemachinePath.Waypoint[] cine = new CinemachinePath.Waypoint[generatedWaypoints.Count];
         cine = generatedWaypoints.ToArray();
-        pathTrain_1 = gameObject.AddComponent<CinemachinePath>();
-        pathTrain_1.m_Waypoints =cine;
-        train.m_Path = pathTrain_1;
+        CinemachinePath currentCinePath = gameObject.GetComponent<CinemachinePath>();
+        if (!currentCinePath)
+        {
+            pathTrain_1 = gameObject.AddComponent<CinemachinePath>();
+            pathTrain_1.m_Waypoints =cine;
+            train.m_Path = pathTrain_1;
+        }
     }
 
     public void Run()
@@ -90,18 +95,40 @@ public class RailCreator : MonoBehaviour
         restart:
         foreach (var rail in _listRails)
         {
-
-
-            CinemachinePath.Waypoint wp = ChechWaypoint.m_Waypoints[1];
+            CinemachinePath.Waypoint wp = ChechWaypoint.m_Waypoints[indexCheck];
             var pos1= ChechWaypoint.transform.localRotation * wp.position + ChechWaypoint.transform.localPosition;
 
             CinemachinePath.Waypoint startWP = rail.m_Waypoints[0];
             var pos2= rail.transform.localRotation * startWP.position + rail.transform.localPosition;
+            CinemachinePath.Waypoint endWP = rail.m_Waypoints[1];
+            var pos3= rail.transform.localRotation * endWP.position + rail.transform.localPosition;
+            Vector3 pos4 = Vector3.zero;
+            if (rail.m_Waypoints.Length>2)
+            {
+                CinemachinePath.Waypoint moreWP = rail.m_Waypoints[2];
+                pos4= rail.transform.localRotation * moreWP.position + rail.transform.localPosition;
+            }
 
             if (pos2 == pos1)
             {
                 AddWaypoint(rail, 1);
                 ChechWaypoint = rail;
+                indexCheck = 1;
+                _listRails.Remove(rail);
+                goto restart;
+            }else if (pos3 == pos1)
+            {
+                AddWaypoint(rail, 0);
+                ChechWaypoint = rail;
+                indexCheck = 0;
+                _listRails.Remove(rail);
+                goto restart;
+            }
+            else if (rail.m_Waypoints.Length>2 && pos4 == pos1)
+            {
+                AddWaypoint(rail, 1);
+                ChechWaypoint = rail;
+                indexCheck = 1;
                 _listRails.Remove(rail);
                 goto restart;
             }
@@ -115,7 +142,12 @@ public class RailCreator : MonoBehaviour
         CinemachinePath.Waypoint wp = childCinemachinePath.m_Waypoints[idx];
         CinemachinePath.Waypoint targetWP = new CinemachinePath.Waypoint();
         targetWP.position = child.transform.localRotation * wp.position + child.transform.localPosition;
-        targetWP.tangent = child.transform.localRotation * wp.tangent;
+        var changeVar = 1;
+        if (idx == 0)
+        {
+            changeVar = -1;
+        }
+        targetWP.tangent = child.transform.localRotation * wp.tangent * changeVar;
         targetWP.roll = wp.roll;
         generatedWaypoints.Add(targetWP);
     }

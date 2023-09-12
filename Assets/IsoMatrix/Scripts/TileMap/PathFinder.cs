@@ -46,12 +46,12 @@ public class PathFinder
     {
         List<TileManager> finishList = new List<TileManager>();
         TileManager currentTile = end;
-        // finishList.Add(start);
         while (currentTile!= start)
         {
             finishList.Add(currentTile);
             currentTile = currentTile.previous;
         }
+        // finishList.Add(start);
 
         finishList.Reverse();
         return finishList;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class TileManager : MonoBehaviour
@@ -16,6 +17,7 @@ public class TileManager : MonoBehaviour
     }
 
     public bool isBlock;
+    public TileManager preTile ;
     public TileManager previous;
     public Vector2 GridLocation;
 }

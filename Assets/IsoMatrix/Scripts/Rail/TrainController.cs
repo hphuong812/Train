@@ -41,6 +41,8 @@ public class TrainController : MonoBehaviour
 
         public bool canRun = false;
 
+        public TileManager tileActive;
+
         void FixedUpdate()
         {
             if (m_UpdateMethod == UpdateMethod.FixedUpdate)
