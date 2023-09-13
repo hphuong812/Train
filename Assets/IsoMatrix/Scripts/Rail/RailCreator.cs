@@ -14,9 +14,12 @@ public class RailCreator : MonoBehaviour
     private  List<CinemachinePath.Waypoint> generatedWaypoints;
     private List<CinemachinePath> _listRails = new List<CinemachinePath>();
     private CinemachinePath ChechWaypoint;
+    private CinemachinePath CurrentChechWaypoint;
     private  int currentWaypointIndex = 0;
     private int indexCheck = 1;
     private bool canRun;
+    private bool lockCheckGroup;
+    private int maxPoint = 100;
 
     private void Start()
     {
@@ -24,6 +27,7 @@ public class RailCreator : MonoBehaviour
         AddWaypoint(StartRail, 0);
         AddWaypoint(StartRail, 1);
         ChechWaypoint = StartRail;
+        CurrentChechWaypoint = ChechWaypoint;
 
         // CinemachinePath.Waypoint wp = pathTrain_1.m_Waypoints[1];
         // var pos1= pathTrain_1.transform.localRotation * wp.position + pathTrain_1.transform.localPosition;
@@ -93,44 +97,56 @@ public class RailCreator : MonoBehaviour
     public void RailCheck()
     {
         restart:
-        foreach (var rail in _listRails)
+        if ( generatedWaypoints.Count < maxPoint)
         {
-            CinemachinePath.Waypoint wp = ChechWaypoint.m_Waypoints[indexCheck];
-            var pos1= ChechWaypoint.transform.localRotation * wp.position + ChechWaypoint.transform.localPosition;
+            foreach (var rail in _listRails)
+            {
+                CinemachinePath.Waypoint wp = ChechWaypoint.m_Waypoints[indexCheck];
+                var pos1= ChechWaypoint.transform.localRotation * wp.position + ChechWaypoint.transform.localPosition;
 
-            CinemachinePath.Waypoint startWP = rail.m_Waypoints[0];
-            var pos2= rail.transform.localRotation * startWP.position + rail.transform.localPosition;
-            CinemachinePath.Waypoint endWP = rail.m_Waypoints[1];
-            var pos3= rail.transform.localRotation * endWP.position + rail.transform.localPosition;
-            Vector3 pos4 = Vector3.zero;
-            if (rail.m_Waypoints.Length>2)
-            {
-                CinemachinePath.Waypoint moreWP = rail.m_Waypoints[2];
-                pos4= rail.transform.localRotation * moreWP.position + rail.transform.localPosition;
-            }
+                CinemachinePath.Waypoint startWP = rail.m_Waypoints[0];
+                var pos2= rail.transform.localRotation * startWP.position + rail.transform.localPosition;
+                CinemachinePath.Waypoint endWP = rail.m_Waypoints[1];
+                var pos3= rail.transform.localRotation * endWP.position + rail.transform.localPosition;
+                Vector3 pos4 = Vector3.zero;
+                if (ChechWaypoint.transform.localPosition !=  rail.transform.localPosition)
+                {
+                    if (rail.m_Waypoints.Length>2)
+                    {
+                        CinemachinePath.Waypoint moreWP = rail.m_Waypoints[2];
+                        pos4= rail.transform.localRotation * moreWP.position + rail.transform.localPosition;
+                    }
 
-            if (pos2 == pos1)
-            {
-                AddWaypoint(rail, 1);
-                ChechWaypoint = rail;
-                indexCheck = 1;
-                _listRails.Remove(rail);
-                goto restart;
-            }else if (pos3 == pos1)
-            {
-                AddWaypoint(rail, 0);
-                ChechWaypoint = rail;
-                indexCheck = 0;
-                _listRails.Remove(rail);
-                goto restart;
-            }
-            else if (rail.m_Waypoints.Length>2 && pos4 == pos1)
-            {
-                AddWaypoint(rail, 1);
-                ChechWaypoint = rail;
-                indexCheck = 1;
-                _listRails.Remove(rail);
-                goto restart;
+                    if (pos2 == pos1)
+                    {
+                        AddWaypoint(rail, 1);
+                        // _listRails.Add(CurrentChechWaypoint);
+                        // CurrentChechWaypoint = ChechWaypoint;
+                        ChechWaypoint = rail;
+                        indexCheck = 1;
+                        // _listRails.Remove(rail);
+                        goto restart;
+                    }else if (pos3 == pos1)
+                    {
+                        AddWaypoint(rail, 0);
+                        // _listRails.Add(CurrentChechWaypoint);
+                        // CurrentChechWaypoint = ChechWaypoint;
+                        ChechWaypoint = rail;
+                        indexCheck = 0;
+                        // _listRails.Remove(rail);
+                        goto restart;
+                    }
+                    else if (rail.m_Waypoints.Length>2 && pos4 == pos1 && ChechWaypoint != rail)
+                    {
+                        AddWaypoint(rail, 1);
+                        // _listRails.Add(CurrentChechWaypoint);
+                        // CurrentChechWaypoint = ChechWaypoint;
+                        ChechWaypoint = rail;
+                        indexCheck = 1;
+                        // _listRails.Remove(rail);
+                        goto restart;
+                    }
+                }
             }
         }
     }

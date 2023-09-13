@@ -1985,6 +1985,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &46484358
@@ -13068,6 +13069,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &353967945
@@ -13791,6 +13793,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &383675992
@@ -18787,6 +18790,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &537047869
@@ -25842,6 +25846,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &699167777
@@ -27009,6 +27014,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &727152579
@@ -27288,6 +27294,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &733556387
@@ -28561,6 +28568,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &756837184
@@ -28692,6 +28700,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &758128533
@@ -33765,6 +33774,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &949708504
@@ -35672,6 +35682,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1005139393
@@ -37283,6 +37294,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1070090118
@@ -38006,6 +38018,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1091933054
@@ -38803,6 +38816,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1108099633
@@ -39332,6 +39346,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: ffd4f19d-dc33-46ea-ba0a-6b2dcf18defd
     m_ActionName: Touch/TouchUp[/Device Simulator Touchscreen/primaryTouch/press]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1112438558}
+        m_TargetAssemblyTypeName: GridChecker, Assembly-CSharp
+        m_MethodName: Tapped
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b57f9bf6-2df9-49ff-b607-7071380c0c09
+    m_ActionName: Touch/Tap[/Device Simulator Touchscreen/primaryTouch/position]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Touch
@@ -39351,7 +39381,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabtest: {fileID: 4312496384057896706, guid: 555b9355fced44e188f3ea94e1614ab6,
     type: 3}
-  prefabContainert: {fileID: 521255532}
+  prefabContainer: {fileID: 521255532}
   TileLayerMask:
     serializedVersion: 2
     m_Bits: 512
@@ -39486,6 +39516,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1116616139
@@ -40283,6 +40314,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1127856578
@@ -40488,6 +40520,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1129964953
@@ -41729,6 +41762,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1162218480
@@ -42378,6 +42412,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1174319206
@@ -42614,13 +42649,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1176472564}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.48296294, y: 0.22414392, z: -0.12940955, w: 0.8365163}
-  m_LocalPosition: {x: -2.34, y: 9, z: -4}
+  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
+  m_LocalPosition: {x: 0.01, y: 9, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 60, y: 30, z: 0}
+  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
 --- !u!114 &1176472568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43978,6 +44013,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1239094319
@@ -45885,6 +45921,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1302353423
@@ -46978,6 +47015,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1345212574
@@ -48737,6 +48775,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1387173438
@@ -48942,6 +48981,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1394885726
@@ -50997,6 +51037,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1437462840
@@ -55050,6 +55091,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1579121821
@@ -55477,6 +55519,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1591274783
@@ -56988,6 +57031,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1633019467
@@ -59783,6 +59827,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1709265500
@@ -61246,6 +61291,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1733871938
@@ -61599,6 +61645,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1747825963
@@ -62174,6 +62221,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1768295579
@@ -62897,6 +62945,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1801959300
@@ -64952,6 +65001,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1888465078
@@ -65453,6 +65503,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &1904025375
@@ -71294,6 +71345,7 @@ MonoBehaviour:
   G: 0
   H: 0
   isBlock: 0
+  preTile: {fileID: 0}
   previous: {fileID: 0}
   GridLocation: {x: 0, y: 0}
 --- !u!1001 &2073044195

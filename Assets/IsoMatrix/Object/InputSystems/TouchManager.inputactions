@@ -1,5 +1,5 @@
 {
-    "name": "Touch",
+    "name": "TouchManager",
     "maps": [
         {
             "name": "Touch",
@@ -21,6 +21,15 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Tap",
+                    "type": "Button",
+                    "id": "b57f9bf6-2df9-49ff-b607-7071380c0c09",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Tap",
                     "initialStateCheck": false
                 }
             ],
@@ -44,6 +53,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "TouchUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "96e3f2e1-f45b-4a64-8ae6-7c011359437c",
+                    "path": "<Touchscreen>/primaryTouch/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
