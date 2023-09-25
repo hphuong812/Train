@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using CatSimulate.Level;
+using IsoMatrix.Scripts.Rail;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
@@ -6,10 +8,7 @@ using UnityEngine.Serialization;
 
 public class GridChecker : MonoBehaviour
 {
-        [SerializeField]
-        private GameObject prefabtest;
-        [SerializeField]
-        private GameObject prefabContainer;
+        public GameObject prefabContainer;
 
         public LayerMask TileLayerMask;
 
@@ -36,14 +35,24 @@ public class GridChecker : MonoBehaviour
             _railGenerate = new RailGenerate();
         }
 
+        public void GetFixPath()
+        {
+            foreach (Transform child in prefabContainer.transform)
+            {
+                RailManager railManager = child.GetComponent<RailManager>();
+                if (railManager)
+                {
+                    listRail.Add(railManager);
+                }
+            }
+        }
+
 
         public void DragStarted(InputAction.CallbackContext ctx)
         {
 
             if (ctx.phase == InputActionPhase.Performed)
             {
-                Debug.Log("drag");
-
                 var touchPosition = ctx.ReadValue<Vector2>();
                 Ray ray = Camera.main.ScreenPointToRay(touchPosition);
 
@@ -74,7 +83,7 @@ public class GridChecker : MonoBehaviour
                                 }
                             }
 
-                            if (cout>0)
+                            if (cout>0 && !listRail[index].isFix)
                             {
                                 typeChange = CheckTouchGroupRail(typeTapRail);
                                 if (typeChange != RailType.none && index != -1)
@@ -103,7 +112,7 @@ public class GridChecker : MonoBehaviour
                     }
                     if (path.Count>0)
                     {
-                        MoveCharacter();
+                        ChangePathType();
                     }
                 }
 
@@ -174,9 +183,8 @@ public class GridChecker : MonoBehaviour
             return "top";
         }
 
-        private void MoveCharacter()
+        private void ChangePathType()
         {
-
             for (int i = 0; i < path.Count; i++)
             {
 
@@ -208,7 +216,7 @@ public class GridChecker : MonoBehaviour
                 if (railDir!= RailType.none)
                 {
                     var nameRail = "rail_"+railDir.ToString();
-                    if (railOptionTileCheck != null && index != -1)
+                    if (railOptionTileCheck != null && index != -1 && !listRail[index].isFix)
                     {
                         if (raiOption == RailOption.angle && railOptionTileCheck ==RailOption.edge )
                         {
@@ -216,9 +224,13 @@ public class GridChecker : MonoBehaviour
                         }
                         Destroy(listRail[index].gameObject);
                         listRail.RemoveAt(index);
+                        AddNewRail(nameRail, pos);
+                    }
+                    else if(index == -1)
+                    {
+                        AddNewRail(nameRail, pos);
                     }
 
-                    AddNewRail(nameRail, pos);
                 }
             }
             CheckStart();
@@ -259,7 +271,7 @@ public class GridChecker : MonoBehaviour
                         }
                     }
                     var nameRail = "rail_"+railDirbefore.ToString();
-                    if (railOptionTileCheck != null && index != -1)
+                    if (railOptionTileCheck != null && index != -1 && !listRail[index].isFix)
                     {
                         if (raiOption == RailOption.angle && railOptionTileCheck ==RailOption.edge )
                         {
@@ -267,8 +279,13 @@ public class GridChecker : MonoBehaviour
                         }
                         Destroy(listRail[index].gameObject);
                         listRail.RemoveAt(index);
+                        AddNewRail(nameRail, posChange);
                     }
-                    AddNewRail(nameRail, posChange);
+                    else if(index == -1)
+                    {
+                        AddNewRail(nameRail, posChange);
+                    }
+
                 }
             }
         }

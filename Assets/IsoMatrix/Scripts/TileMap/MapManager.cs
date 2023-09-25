@@ -26,7 +26,7 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    void Start()
+    void OnEnable()
     {
         map = new Dictionary<Vector2, TileManager>();
         var tileContainer = gameObject.GetComponentInChildren<Tilemap>();

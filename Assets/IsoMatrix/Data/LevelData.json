@@ -1,0 +1,105 @@
+{
+  "version": "0.0.1",
+  "data": [
+    {
+      "id": 0,
+      "name": "lv1",
+      "levelKey" : "Level_1"
+    },
+    {
+      "id": 1,
+      "name": "lv2",
+      "levelKey" : "Level_2"
+    },
+    {
+      "id": 2,
+      "name": "lv3",
+      "levelKey" : "Level_3"
+    },
+    {
+      "id": 3,
+      "name": "lv4",
+      "levelKey" : "Level_4"
+    },
+    {
+      "id": 4,
+      "name": "lv5",
+      "levelKey" : "Level_5"
+    },
+    {
+      "id": 5,
+      "name": "lv6",
+      "levelKey" : "Level_6"
+    },
+    {
+      "id": 6,
+      "name": "lv7",
+      "levelKey" : "Level_7"
+    },
+    {
+      "id": 7,
+      "name": "lv8",
+      "levelKey" : "Level_8"
+    },
+    {
+      "id": 8,
+      "name": "lv9",
+      "levelKey" : "Level_9"
+    },
+    {
+      "id": 9,
+      "name": "lv10",
+      "levelKey" : "Level_10"
+    },
+    {
+      "id": 10,
+      "name": "lv11",
+      "levelKey" : "Level_11"
+    },
+    {
+      "id": 11,
+      "name": "lv12",
+      "levelKey" : "Level_12"
+    },
+    {
+      "id": 12,
+      "name": "lv13",
+      "levelKey" : "Level_13"
+    },
+    {
+      "id": 13,
+      "name": "lv14",
+      "levelKey" : "Level_14"
+    },
+    {
+      "id": 14,
+      "name": "lv15",
+      "levelKey" : "Level_15"
+    },
+    {
+      "id": 15,
+      "name": "lv16",
+      "levelKey" : "Level_16"
+    },
+    {
+      "id": 16,
+      "name": "lv17",
+      "levelKey" : "Level_17"
+    },
+    {
+      "id": 17,
+      "name": "lv18",
+      "levelKey" : "Level_18"
+    },
+    {
+      "id": 18,
+      "name": "lv19",
+      "levelKey" : "Level_19"
+    },
+    {
+      "id": 19,
+      "name": "lv20",
+      "levelKey" : "Level_20"
+    }
+  ]
+}

@@ -117,6 +117,21 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bedc93fc37b524cc5aede103a91b08a5
+    m_Address: AdnMetaConfig
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bba3605dfd4e34fc6bbe5162a7c5748a
+    m_Address: LoggerConfig
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a92b0c1d2022f4bc385936cfc6ec4718
+    m_Address: GameConfigLoader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 59fbd1c85ef324204a2bf617d8f6fb7b, type: 2}
   m_SchemaSet:
