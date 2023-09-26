@@ -57,7 +57,7 @@ public class GridChecker : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(touchPosition);
 
                 RaycastHit hit;
-                if(Physics.Raycast(ray, out hit, maxDistance: 200f))
+                if(Physics.Raycast(ray, out hit, maxDistance: 200f, TileLayerMask))
                 {
                     if (LayerMarkChecker.LayerInLayerMask(hit.transform.gameObject.layer, TileLayerMask))
                     {

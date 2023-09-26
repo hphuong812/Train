@@ -163,13 +163,15 @@ public class RailGenerate
         {
             if (rail.transform.localPosition == new Vector3(railCheck.x, 1, railCheck.z -1 )&&
                 (rail.railType == RailType.right ||  rail.railType == RailType.bottom_left|| rail.railType == RailType.top_left
-                 // ||rail.railType == RailType.right_bottom_left || rail.railType == RailType.right_bottom_right ||rail.railType == RailType.right_top_left || rail.railType == RailType.right_top_right
+                 ||rail.railType == RailType.right_bottom_left || rail.railType == RailType.right_bottom_right ||rail.railType == RailType.right_top_left || rail.railType == RailType.right_top_right
+                 || rail.railType == RailType.top_top_left || rail.railType == RailType.top_bottom_left
                  ))
             {
                 return RailType.right;
             }else if (rail.transform.localPosition == new Vector3(railCheck.x-1, 1, railCheck.z)&&
                       (rail.railType == RailType.top ||  rail.railType == RailType.bottom_left|| rail.railType == RailType.bottom_right
-                       // || rail.railType == RailType.top_top_left || rail.railType == RailType.top_top_right||rail.railType == RailType.top_bottom_left || rail.railType == RailType.top_bottom_right
+                       || rail.railType == RailType.top_top_left || rail.railType == RailType.top_top_right||rail.railType == RailType.top_bottom_left || rail.railType == RailType.top_bottom_right
+                       ||rail.railType == RailType.right_top_left || rail.railType == RailType.right_top_right
                        ))
             {
                 return RailType.top;
@@ -186,13 +188,15 @@ public class RailGenerate
         {
             if (rail.transform.localPosition == new Vector3(railCheck.x, 1, railCheck.z + 1 )&&
                 (rail.railType == RailType.right ||  rail.railType == RailType.bottom_right|| rail.railType == RailType.top_right
-                 // ||rail.railType == RailType.right_bottom_left || rail.railType == RailType.right_bottom_right ||rail.railType == RailType.right_top_left || rail.railType == RailType.right_top_right
+                 ||rail.railType == RailType.right_bottom_left || rail.railType == RailType.right_bottom_right ||rail.railType == RailType.right_top_left || rail.railType == RailType.right_top_right
+                 || rail.railType == RailType.top_top_right || rail.railType == RailType.top_bottom_right
                  ))
             {
                 return RailType.right;
             }else if (rail.transform.localPosition == new Vector3(railCheck.x-1, 1, railCheck.z)&&
                       (rail.railType == RailType.top ||  rail.railType == RailType.bottom_left|| rail.railType == RailType.bottom_right
-                       // || rail.railType == RailType.top_top_left || rail.railType == RailType.top_top_right||rail.railType == RailType.top_bottom_left || rail.railType == RailType.top_bottom_right
+                      || rail.railType == RailType.top_top_left || rail.railType == RailType.top_top_right||rail.railType == RailType.top_bottom_left || rail.railType == RailType.top_bottom_right
+                      ||rail.railType == RailType.right_top_left || rail.railType == RailType.right_top_right
                        ))
             {
                 return RailType.top;
@@ -209,13 +213,15 @@ public class RailGenerate
         {
             if (rail.transform.localPosition == new Vector3(railCheck.x, 1, railCheck.z -1 )&&
                 (rail.railType == RailType.right ||  rail.railType == RailType.bottom_left|| rail.railType == RailType.top_left
-                 // ||rail.railType == RailType.right_bottom_left || rail.railType == RailType.right_bottom_right ||rail.railType == RailType.right_top_left || rail.railType == RailType.right_top_right
+                 ||rail.railType == RailType.right_bottom_left || rail.railType == RailType.right_bottom_right ||rail.railType == RailType.right_top_left || rail.railType == RailType.right_top_right
+                 || rail.railType == RailType.top_top_left || rail.railType == RailType.top_bottom_left
                  ))
             {
                 return RailType.right;
             }else if (rail.transform.localPosition == new Vector3(railCheck.x+1, 1, railCheck.z )&&
                       (rail.railType == RailType.top ||  rail.railType == RailType.top_left|| rail.railType == RailType.top_right
-                       // || rail.railType == RailType.top_top_left || rail.railType == RailType.top_top_right ||rail.railType == RailType.top_bottom_left || rail.railType == RailType.top_bottom_right
+                       || rail.railType == RailType.top_top_left || rail.railType == RailType.top_top_right ||rail.railType == RailType.top_bottom_left || rail.railType == RailType.top_bottom_right
+                       ||rail.railType == RailType.right_bottom_left || rail.railType == RailType.right_bottom_right
                        ))
             {
                 return RailType.top;
@@ -233,13 +239,15 @@ public class RailGenerate
         {
             if (rail.transform.localPosition == new Vector3(railCheck.x, 1, railCheck.z + 1 )&&
                 (rail.railType == RailType.right ||  rail.railType == RailType.bottom_right|| rail.railType == RailType.top_right
-                 // ||rail.railType == RailType.right_bottom_left || rail.railType == RailType.right_bottom_right ||rail.railType == RailType.right_top_left || rail.railType == RailType.right_top_right
-                 ))
+                 ||rail.railType == RailType.right_bottom_left || rail.railType == RailType.right_bottom_right ||rail.railType == RailType.right_top_left || rail.railType == RailType.right_top_right
+                 || rail.railType == RailType.top_top_right || rail.railType == RailType.top_bottom_right
+                ))
             {
                 return RailType.right;
             }else if (rail.transform.localPosition == new Vector3(railCheck.x+1, 1, railCheck.z )&&
                       (rail.railType == RailType.top ||  rail.railType == RailType.top_left|| rail.railType == RailType.top_right
-                       // || rail.railType == RailType.top_top_left || rail.railType == RailType.top_top_right ||rail.railType == RailType.top_bottom_left || rail.railType == RailType.top_bottom_right
+                       || rail.railType == RailType.top_top_left || rail.railType == RailType.top_top_right ||rail.railType == RailType.top_bottom_left || rail.railType == RailType.top_bottom_right
+                       ||rail.railType == RailType.right_bottom_left || rail.railType == RailType.right_bottom_right
                        ))
             {
                 return RailType.top;

@@ -89,7 +89,6 @@ namespace IsoMatrix.Scripts.Rail
         {
             if (canRun)
             {
-                train.m_Speed = 1;
                 train.canRun = true;
                 canRun = false;
             }
