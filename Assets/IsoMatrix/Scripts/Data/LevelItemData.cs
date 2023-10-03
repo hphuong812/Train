@@ -15,4 +15,8 @@ public class LevelItemData
     [Key(2)]
     [JsonProperty("name")]
     public string Name { get; set; }
+
+    [Key(3)]
+    [JsonProperty("maxRail")]
+    public int MaxRail { get; set; }
 }

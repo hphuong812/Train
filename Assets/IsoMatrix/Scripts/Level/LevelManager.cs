@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using ADN.Meta.Core;
 using IsoMatrix.Scripts.Rail;
+using IsoMatrix.Scripts.TileMap;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -45,6 +46,11 @@ namespace IsoMatrix.Scripts.Level
         public void AddListTrain(List<GameObject> listItem)
         {
             ListTrain = new List<GameObject> (listItem);
+        }
+
+        public void AddMaxRail(int maxRail)
+        {
+            gridChecker.AddMaxRail(maxRail);
         }
 
         public void PauseGame()
@@ -92,19 +98,21 @@ namespace IsoMatrix.Scripts.Level
             }
         }
 
+        public void ChangeTypeAction(bool type)
+        {
+            gridChecker.IsDestroy = type;
+        }
+
         public void OnEventTriggered(LevelEvent e)
         {
 
         }
 
-        public void DragStopped(InputAction.CallbackContext ctx)
+        public void TrainAction()
         {
-            if (ctx.phase == InputActionPhase.Canceled)
+            foreach (var railCreator in listRailCreator)
             {
-                foreach (var railCreator in listRailCreator)
-                {
-                    railCreator.DragStopped(ctx);
-                }
+                railCreator.DragStopped();
             }
         }
 

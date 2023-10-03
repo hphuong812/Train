@@ -42,14 +42,11 @@ namespace IsoMatrix.Scripts.Rail
             // Debug.Log(tangent1+ "||"+tangent2);
         }
 
-        public void DragStopped(InputAction.CallbackContext ctx)
+        public void DragStopped()
         {
-            if (ctx.phase == InputActionPhase.Canceled)
-            {
-                GetAllRail();
-                TrainWayFindind();
-                Invoke(nameof(Run), 0f);
-            }
+            GetAllRail();
+            TrainWayFindind();
+            Invoke(nameof(Run), 0f);
         }
 
         public void GetAllRail()

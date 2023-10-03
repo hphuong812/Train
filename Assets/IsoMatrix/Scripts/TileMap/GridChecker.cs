@@ -1,24 +1,25 @@
 using System.Collections.Generic;
-using CatSimulate.Level;
+using System.Linq;
 using IsoMatrix.Scripts.Rail;
+using IsoMatrix.Scripts.UI;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
-public class GridChecker : MonoBehaviour
+namespace IsoMatrix.Scripts.TileMap
 {
+    public class GridChecker : MonoBehaviour
+    {
+        [SerializeField] private UIController _uiController;
+        private int maxLevelRail;
+        public int MaxLevelRail
+        {
+            get => maxLevelRail;
+            set => maxLevelRail = value;
+        }
+
         public GameObject prefabContainer;
-
         public LayerMask TileLayerMask;
-
-        [SerializeField]
-        private float timeForNextRay = 0.05f;
-        [SerializeField]
-        private float speed = 10f;
-        private int foodDistance = 10;
-
-        private float timer = 0;
 
         private bool hasFirst;
         private bool isCreate;
@@ -29,10 +30,24 @@ public class GridChecker : MonoBehaviour
         private List<RailManager> listRail = new List<RailManager>();
         private List<Vector2> listPos = new List<Vector2>();
         private RailGenerate _railGenerate;
+        private int numRail = 0;
+        private bool isDestroy;
+        public bool IsDestroy
+        {
+            get => isDestroy;
+            set => isDestroy = value;
+        }
+
         void Start()
         {
             _pathFinder = new PathFinder();
             _railGenerate = new RailGenerate();
+        }
+
+        public void AddMaxRail(int maxRail)
+        {
+            maxLevelRail = maxRail;
+            _uiController.UpdateCountRail(maxLevelRail);
         }
 
         public void GetFixPath()
@@ -50,9 +65,10 @@ public class GridChecker : MonoBehaviour
 
         public void DragStarted(InputAction.CallbackContext ctx)
         {
-
             if (ctx.phase == InputActionPhase.Performed)
             {
+                numRail = listRail.FindAll(rail => rail.isFix == false).Count;
+                _uiController.UpdateCountRail(maxLevelRail - numRail);
                 var touchPosition = ctx.ReadValue<Vector2>();
                 Ray ray = Camera.main.ScreenPointToRay(touchPosition);
 
@@ -62,51 +78,66 @@ public class GridChecker : MonoBehaviour
                     if (LayerMarkChecker.LayerInLayerMask(hit.transform.gameObject.layer, TileLayerMask))
                     {
                         TileManager tileManager = hit.transform.gameObject.GetComponent<TileManager>();
-                        if (!hasFirst)
+                        if (!isDestroy)
                         {
-                            var index = -1;
-                            firstTileManager = tileManager;
-                            firstTileManager.previous = tileManager.previous;
-                            Vector3 firstRailPos = new Vector3(firstTileManager.GridLocation.x, 1,
-                                firstTileManager.GridLocation.y);
-                            var cout = 0;
-                            RailType typeTapRail = RailType.none;
-                            RailType typeChange = RailType.none;
-                            for (int i = 0; i < listRail.Count; i++)
+                            if (!hasFirst)
                             {
-                                if (listRail[i].gameObject.transform.localPosition == new Vector3(tileManager.GridLocation.x,1,tileManager.GridLocation.y))
+                                var index = -1;
+                                firstTileManager = tileManager;
+                                firstTileManager.previous = tileManager.previous;
+                                Vector3 firstRailPos = new Vector3(firstTileManager.GridLocation.x, 1,
+                                    firstTileManager.GridLocation.y);
+                                var cout = 0;
+                                RailType typeTapRail = RailType.none;
+                                RailType typeChange = RailType.none;
+                                for (int i = 0; i < listRail.Count; i++)
                                 {
-                                    typeTapRail = listRail[i].railType;
-                                    index = i;
-                                    cout++;
-                                    break;
+                                    if (listRail[i].gameObject.transform.localPosition == new Vector3(tileManager.GridLocation.x,1,tileManager.GridLocation.y))
+                                    {
+                                        typeTapRail = listRail[i].railType;
+                                        index = i;
+                                        cout++;
+                                        break;
+                                    }
+                                }
+
+                                if (cout>0 && !listRail[index].isFix)
+                                {
+                                    typeChange = CheckTouchGroupRail(typeTapRail);
+                                    if (typeChange != RailType.none && index != -1)
+                                    {
+                                        string typeChangeString = "rail_" + typeChange;
+                                        Destroy(listRail[index].gameObject);
+                                        listRail.RemoveAt(index);
+                                        AddNewRail(typeChangeString, firstRailPos);
+                                    }
+                                }else if (cout == 0 && numRail < maxLevelRail)
+                                {
+                                    string type = "rail_"+GetRailNameNear(tileManager);
+                                    AddNewRail(type, firstRailPos);
+
+                                }
+                                hasFirst = true;
+                            }
+                            else
+                            {
+                                if (path.Count ==0)
+                                {
+                                    path = _pathFinder.FindPath(firstTileManager, tileManager);
                                 }
                             }
 
-                            if (cout>0 && !listRail[index].isFix)
-                            {
-                                typeChange = CheckTouchGroupRail(typeTapRail);
-                                if (typeChange != RailType.none && index != -1)
-                                {
-                                    string typeChangeString = "rail_" + typeChange;
-                                    Destroy(listRail[index].gameObject);
-                                    listRail.RemoveAt(index);
-                                    AddNewRail(typeChangeString, firstRailPos);
-                                }
-                            }else if (cout == 0)
-                            {
-                                string type = "rail_"+GetRailNameNear(tileManager);
-
-                                AddNewRail(type, firstRailPos);
-
-                            }
-                            hasFirst = true;
                         }
                         else
                         {
-                            if (path.Count ==0)
+                            for (int i = 0; i < listRail.Count; i++)
                             {
-                                path = _pathFinder.FindPath(firstTileManager, tileManager);
+                                if (listRail[i].gameObject.transform.localPosition == new Vector3(tileManager.GridLocation.x,1,tileManager.GridLocation.y) && !listRail[i].isFix)
+                                {
+                                    Destroy(listRail[i].gameObject);
+                                    listRail.RemoveAt(i);
+                                    return;
+                                }
                             }
                         }
                     }
@@ -115,10 +146,7 @@ public class GridChecker : MonoBehaviour
                         ChangePathType();
                     }
                 }
-
-
             }
-            timer += Time.deltaTime;
         }
 
         public void AddNewRail(string type, Vector3 pos)
@@ -131,11 +159,10 @@ public class GridChecker : MonoBehaviour
                     Check2.transform.localPosition = pos;
                     RailManager railManager = Check2.GetComponent<RailManager>();
                     listRail.Add(railManager);
-
                 }
             };
-        }
 
+        }
         public RailType CheckTouchGroupRail(RailType typeRail)
         {
             if (typeRail != RailType.none)
@@ -226,7 +253,7 @@ public class GridChecker : MonoBehaviour
                         listRail.RemoveAt(index);
                         AddNewRail(nameRail, pos);
                     }
-                    else if(index == -1)
+                    else if(index == -1 && numRail < maxLevelRail)
                     {
                         AddNewRail(nameRail, pos);
                     }
@@ -244,6 +271,31 @@ public class GridChecker : MonoBehaviour
             }
             firstTileManager = path[path.Count-1];
             path.Clear();
+        }
+
+        private void Update()
+        {
+
+        }
+
+        private void LateUpdate()
+        {
+            CheckSameRail();
+        }
+
+        public void CheckSameRail()
+        {
+            restart:
+            foreach (var item in listRail) {
+                if (listRail.Count(i => i.gameObject.transform.localPosition == item.gameObject.transform.localPosition) > 1)
+                {
+                    var railDr = listRail.FindLast(i =>
+                        i.gameObject.transform.localPosition == item.gameObject.transform.localPosition);
+                    Destroy(railDr.gameObject);
+                    listRail.Remove(railDr);
+                    goto restart;
+                }
+            }
         }
 
         private void CheckStart()
@@ -265,7 +317,6 @@ public class GridChecker : MonoBehaviour
                         if (listRail[i].gameObject.transform.localPosition == new Vector3(firstTileManager.GridLocation.x, 1, firstTileManager.GridLocation.y))
                         {
                             railOptionTileCheck = listRail[i].railOption;
-                            railCurrentType = listRail[i].railType;
                             index = i;
                             break;
                         }
@@ -281,48 +332,13 @@ public class GridChecker : MonoBehaviour
                         listRail.RemoveAt(index);
                         AddNewRail(nameRail, posChange);
                     }
-                    else if(index == -1)
+                    else if(index == -1&& numRail < maxLevelRail)
                     {
                         AddNewRail(nameRail, posChange);
                     }
 
                 }
             }
-        }
-
-        private void CheckEnd()
-        {
-            // if (listRail.Count>0 && beforeFirstTileManager)
-            // {
-            //     var reviousTile = beforeFirstTileManager.previous? beforeFirstTileManager.previous : null;
-            //     var railDirbefore = _railGenerate.RailDirection(reviousTile, beforeFirstTileManager, firstTileManager);
-            //     var posChange = new Vector3(beforeFirstTileManager.GridLocation.x, 1,beforeFirstTileManager.GridLocation.y );
-            //     if (railDirbefore != RailType.none)
-            //     {
-            //         var index = -1;
-            //         for (int i = 0; i < listRail.Count; i++)
-            //         {
-            //             if (listRail[i].transform.localPosition == new Vector3(beforeFirstTileManager.GridLocation.x, 1, beforeFirstTileManager.GridLocation.y))
-            //             {
-            //                 index = i;
-            //                 Destroy(listRail[i]);
-            //                 listRail.RemoveAt(i);
-            //                 break;
-            //             }
-            //         }
-            //         Addressables.LoadAssetAsync<GameObject>("rail_" + railDirbefore.ToString()).Completed += handle =>
-            //         {
-            //             var Check2 = Instantiate(handle.Result, prefabContainert.transform);
-            //             if (Check2)
-            //             {
-            //                 Check2.transform.localPosition =posChange;
-            //
-            //                     listRail.Add(Check2);
-            //
-            //             }
-            //         };
-            //     }
-            // }
         }
 
         public void DragStopped(InputAction.CallbackContext ctx)
@@ -332,7 +348,7 @@ public class GridChecker : MonoBehaviour
                 hasFirst = false;
                 beforeFirstTileManager = null;
                 firstTileManager = null;
-                Debug.Log("cancel");
             }
         }
+    }
 }

@@ -4,102 +4,122 @@
     {
       "id": 0,
       "name": "lv1",
-      "levelKey" : "Level_1"
+      "levelKey" : "Level_1",
+      "maxRail": 9
     },
     {
       "id": 1,
       "name": "lv2",
-      "levelKey" : "Level_2"
+      "levelKey" : "Level_2",
+      "maxRail": 11
     },
     {
       "id": 2,
       "name": "lv3",
-      "levelKey" : "Level_3"
+      "levelKey" : "Level_3",
+      "maxRail": 11
     },
     {
       "id": 3,
       "name": "lv4",
-      "levelKey" : "Level_4"
+      "levelKey" : "Level_4",
+      "maxRail": 11
     },
     {
       "id": 4,
       "name": "lv5",
-      "levelKey" : "Level_5"
+      "levelKey" : "Level_5",
+      "maxRail": 11
     },
     {
       "id": 5,
       "name": "lv6",
-      "levelKey" : "Level_6"
+      "levelKey" : "Level_6",
+      "maxRail": 11
     },
     {
       "id": 6,
       "name": "lv7",
-      "levelKey" : "Level_7"
+      "levelKey" : "Level_7",
+      "maxRail": 11
     },
     {
       "id": 7,
       "name": "lv8",
-      "levelKey" : "Level_8"
+      "levelKey" : "Level_8",
+      "maxRail": 11
     },
     {
       "id": 8,
       "name": "lv9",
-      "levelKey" : "Level_9"
+      "levelKey" : "Level_9",
+      "maxRail": 11
     },
     {
       "id": 9,
       "name": "lv10",
-      "levelKey" : "Level_10"
+      "levelKey" : "Level_10",
+      "maxRail": 11
     },
     {
       "id": 10,
       "name": "lv11",
-      "levelKey" : "Level_11"
+      "levelKey" : "Level_11",
+      "maxRail": 11
     },
     {
       "id": 11,
       "name": "lv12",
-      "levelKey" : "Level_12"
+      "levelKey" : "Level_12",
+      "maxRail": 11
     },
     {
       "id": 12,
       "name": "lv13",
-      "levelKey" : "Level_13"
+      "levelKey" : "Level_13",
+      "maxRail": 11
     },
     {
       "id": 13,
       "name": "lv14",
-      "levelKey" : "Level_14"
+      "levelKey" : "Level_14",
+      "maxRail": 11
     },
     {
       "id": 14,
       "name": "lv15",
-      "levelKey" : "Level_15"
+      "levelKey" : "Level_15",
+      "maxRail": 11
     },
     {
       "id": 15,
       "name": "lv16",
-      "levelKey" : "Level_16"
+      "levelKey" : "Level_16",
+      "maxRail": 11
     },
     {
       "id": 16,
       "name": "lv17",
-      "levelKey" : "Level_17"
+      "levelKey" : "Level_17",
+      "maxRail": 11
     },
     {
       "id": 17,
       "name": "lv18",
-      "levelKey" : "Level_18"
+      "levelKey" : "Level_18",
+      "maxRail": 11
     },
     {
       "id": 18,
       "name": "lv19",
-      "levelKey" : "Level_19"
+      "levelKey" : "Level_19",
+      "maxRail": 11
     },
     {
       "id": 19,
       "name": "lv20",
-      "levelKey" : "Level_20"
+      "levelKey" : "Level_20",
+      "maxRail": 11
     }
   ]
 }

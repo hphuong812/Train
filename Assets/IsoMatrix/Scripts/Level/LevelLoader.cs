@@ -89,6 +89,7 @@ namespace IsoMatrix.Scripts.Level
             levelManager.AddListTrain(levelController.listTrain);
             levelManager.AddListRailCreator(levelController.listRail);
             levelManager.GetPathContainer(levelController.PathContainer);
+            levelManager.AddMaxRail(levelItemData.MaxRail);
             // levelManager.GamePause.AddListener(()=>
             // {
             //     levelController.CurrentLevelCompleted.Invoke();
