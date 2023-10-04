@@ -48,7 +48,7 @@ namespace IsoMatrix.Scripts.Level
             // }
             // else
             // {
-                levelId = curLevelId;
+                levelId =  GameConfig.Instance.CurrentLevel;
             // }
             levelItemData = GameConfig.Instance.LevelItemList.Find((item) => item.Id.Equals(levelId));
             var levelIndex = GameConfig.Instance.LevelItemList.FindIndex((item) => item.Id.Equals(levelId));
@@ -97,12 +97,13 @@ namespace IsoMatrix.Scripts.Level
             levelController.LevelDestroyed += () =>
             {
                 levelManager.CanReset = true;
+                levelManager.OnLevelDestroyed();
             };
             levelController.DataLoaded += LoadDataComplete;
             // if(typeLoad == GameConstant.LEVEL_WIN|| typeLoad == GameConstant.LEVEL_LOAD)
             // {
                 levelController.DataLoaded += ReloadLevel;
-            // }
+                // }
         }
         public void LoadDataComplete()
         {

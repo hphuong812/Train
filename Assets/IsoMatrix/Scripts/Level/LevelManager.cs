@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using ADN.Meta.Core;
 using IsoMatrix.Scripts.Rail;
 using IsoMatrix.Scripts.TileMap;
+using IsoMatrix.Scripts.UI;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -119,6 +120,11 @@ namespace IsoMatrix.Scripts.Level
         public void AddListRailCreator(List<RailCreator> levelControllerListTrain)
         {
             listRailCreator = levelControllerListTrain;
+        }
+
+        public void OnLevelDestroyed()
+        {
+            ScreenEvent.Trigger(ScreenEventType.ScreenOut);
         }
     }
 }

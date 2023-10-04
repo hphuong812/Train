@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using ADN.Meta.Core;
+using IsoMatrix.Scripts.Level;
 using IsoMatrix.Scripts.Rail;
 using IsoMatrix.Scripts.UI;
 using UnityEngine;
@@ -8,7 +10,7 @@ using UnityEngine.InputSystem;
 
 namespace IsoMatrix.Scripts.TileMap
 {
-    public class GridChecker : MonoBehaviour
+    public class GridChecker : MonoBehaviour,IEventListener<LevelEvent>
     {
         [SerializeField] private UIController _uiController;
         private int maxLevelRail;
@@ -28,7 +30,6 @@ namespace IsoMatrix.Scripts.TileMap
         private PathFinder _pathFinder;
         private List<TileManager> path = new List<TileManager>();
         private List<RailManager> listRail = new List<RailManager>();
-        private List<Vector2> listPos = new List<Vector2>();
         private RailGenerate _railGenerate;
         private int numRail = 0;
         private bool isDestroy;
@@ -38,8 +39,11 @@ namespace IsoMatrix.Scripts.TileMap
             set => isDestroy = value;
         }
 
+        private bool isWon;
+
         void Start()
         {
+            EventManager.Subscribe(this);
             _pathFinder = new PathFinder();
             _railGenerate = new RailGenerate();
         }
@@ -52,6 +56,7 @@ namespace IsoMatrix.Scripts.TileMap
 
         public void GetFixPath()
         {
+            listRail.Clear();
             foreach (Transform child in prefabContainer.transform)
             {
                 RailManager railManager = child.GetComponent<RailManager>();
@@ -60,6 +65,8 @@ namespace IsoMatrix.Scripts.TileMap
                     listRail.Add(railManager);
                 }
             }
+
+            isWon = false;
         }
 
 
@@ -280,7 +287,10 @@ namespace IsoMatrix.Scripts.TileMap
 
         private void LateUpdate()
         {
-            CheckSameRail();
+            if (!isWon)
+            {
+                CheckSameRail();
+            }
         }
 
         public void CheckSameRail()
@@ -348,6 +358,27 @@ namespace IsoMatrix.Scripts.TileMap
                 hasFirst = false;
                 beforeFirstTileManager = null;
                 firstTileManager = null;
+            }
+        }
+
+        public void ResetData()
+        {
+            hasFirst = false;
+            beforeFirstTileManager = null;
+            firstTileManager = null;
+        }
+
+        public void OnEventTriggered(LevelEvent e)
+        {
+            switch (e.type)
+            {
+                case LevelEventType.Failed :
+                    ResetData();
+                    break;
+                case LevelEventType.NextLevel:
+                    ResetData();
+                    isWon = true;
+                    break;
             }
         }
     }
