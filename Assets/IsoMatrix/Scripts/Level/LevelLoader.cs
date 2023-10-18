@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using ADN.Meta.Core;
 using IsoMatrix.Scripts.Data;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
 
 namespace IsoMatrix.Scripts.Level
@@ -51,22 +53,17 @@ namespace IsoMatrix.Scripts.Level
                 levelId =  GameConfig.Instance.CurrentLevel;
             // }
             levelItemData = GameConfig.Instance.LevelItemList.Find((item) => item.Id.Equals(levelId));
-            var levelIndex = GameConfig.Instance.LevelItemList.FindIndex((item) => item.Id.Equals(levelId));
-            if (levelIndex >= levelPrefabList.Count)
-            {
-                LoadLevel(levelPrefabList.Count - 1, typeLoad);
-            }
-            else
-            {
-                LoadLevel(levelIndex, typeLoad);
-            }
+            // var levelIndex = GameConfig.Instance.LevelItemList.FindIndex((item) => item.Id.Equals(levelId));
+            LoadLevel(levelItemData.LevelKey, typeLoad);
 
         }
 
-        public virtual void LoadLevel(int index, string typeLoad)
+        public virtual void LoadLevel(string index, string typeLoad)
         {
             GameObject levelPrefab ;
-            levelPrefab = levelPrefabList[index];
+            var levelAssets = Addressables.LoadAssetAsync<GameObject>(index);
+            levelPrefab = levelAssets.WaitForCompletion();
+
 
             if (!levelPrefab)
             {
@@ -86,10 +83,12 @@ namespace IsoMatrix.Scripts.Level
 
             levelGO = Instantiate(levelPrefab, Vector3.zero, Quaternion.identity);
             levelController = levelGO.GetComponent<LevelController>();
+            levelController.locomotiveManager.ListTrainConrect = levelItemData.TrainOrder;
             levelManager.AddListTrain(levelController.listTrain);
             levelManager.AddListRailCreator(levelController.listRail);
             levelManager.GetPathContainer(levelController.PathContainer);
             levelManager.AddMaxRail(levelItemData.MaxRail);
+            levelManager.UpdateCameraSize(levelController.CammeraSize);
             // levelManager.GamePause.AddListener(()=>
             // {
             //     levelController.CurrentLevelCompleted.Invoke();

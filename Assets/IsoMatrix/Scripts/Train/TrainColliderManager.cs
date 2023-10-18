@@ -8,6 +8,7 @@ namespace IsoMatrix.Scripts.Train
         private LayerMask trainLayerMask;
 
         [SerializeField] private TrainController _trainController;
+        [SerializeField] private TrainManager _trainManager;
         [SerializeField] private LayerMask locomotiveLayerMask;
 
         private bool locomotiveMatched;

@@ -13,6 +13,8 @@ namespace IsoMatrix.Scripts.Level
     {
         [SerializeField]
         private GridChecker gridChecker;
+
+        [SerializeField] private Camera isoMatrixCamera;
         public List<GameObject>  ListTrain { get; protected set; }
         public bool CanReset
         {
@@ -117,6 +119,14 @@ namespace IsoMatrix.Scripts.Level
             }
         }
 
+        public void TrainRevert()
+        {
+            foreach (var railCreator in listRailCreator)
+            {
+                railCreator.DragStopped();
+            }
+        }
+
         public void AddListRailCreator(List<RailCreator> levelControllerListTrain)
         {
             listRailCreator = levelControllerListTrain;
@@ -125,6 +135,11 @@ namespace IsoMatrix.Scripts.Level
         public void OnLevelDestroyed()
         {
             ScreenEvent.Trigger(ScreenEventType.ScreenOut);
+        }
+
+        public void UpdateCameraSize(float levelControllerCammeraSize)
+        {
+            isoMatrixCamera.orthographicSize = levelControllerCammeraSize;
         }
     }
 }

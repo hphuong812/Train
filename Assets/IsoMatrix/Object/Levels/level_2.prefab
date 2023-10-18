@@ -1360,8 +1360,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dfadd8f8774b4db79d6ee5da06fca13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CammeraSize: 7.8
+  locomotiveManager: {fileID: 3823276474026773685}
   listTrain: []
-  listDestroyItem: []
   listRail:
   - {fileID: 7854754213179278498}
   - {fileID: 3804548029924727870}
@@ -36869,6 +36870,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4565645923764264456}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3823276474026773685 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 744060913632711357, guid: 8e0f64c366bb84479af83da96a4c0997,
+    type: 3}
+  m_PrefabInstance: {fileID: 4565645923764264456}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11ef86fe30dab429bba18beabec1b399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4568377385558908172
 PrefabInstance:
   m_ObjectHideFlags: 0

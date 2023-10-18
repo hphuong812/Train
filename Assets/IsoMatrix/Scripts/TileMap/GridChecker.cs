@@ -40,6 +40,7 @@ namespace IsoMatrix.Scripts.TileMap
         }
 
         private bool isWon;
+        private Dictionary<Vector2, TileManager> map = new Dictionary<Vector2, TileManager>();
 
         void Start()
         {
@@ -133,7 +134,8 @@ namespace IsoMatrix.Scripts.TileMap
                                     path = _pathFinder.FindPath(firstTileManager, tileManager);
                                 }
                             }
-
+                            map = MapManager.Instance.map;
+                            tileManager.ChangeSprite(TileSpriteName.tex_tile_select);
                         }
                         else
                         {
@@ -146,7 +148,16 @@ namespace IsoMatrix.Scripts.TileMap
                                     return;
                                 }
                             }
+                            tileManager.ChangeSprite(TileSpriteName.tex_tile_destroy);
                         }
+                        foreach (KeyValuePair<Vector2, TileManager> tileManagerInMap in map)
+                        {
+                            if (tileManagerInMap.Key != tileManager.GridLocation)
+                            {
+                                tileManagerInMap.Value.OnUnSelect();
+                            }
+                        }
+                        tileManager.OnSelect();
                     }
                     if (path.Count>0)
                     {
@@ -255,7 +266,11 @@ namespace IsoMatrix.Scripts.TileMap
                         if (raiOption == RailOption.angle && railOptionTileCheck ==RailOption.edge )
                         {
                             nameRail = _railGenerate.CheckAroundRail(listRail, pos, railDir);
+                        }else if (raiOption == RailOption.edge && railOptionTileCheck ==RailOption.angle)
+                        {
+                            nameRail =  "rail_"+railCurrentType.ToString();
                         }
+
                         Destroy(listRail[index].gameObject);
                         listRail.RemoveAt(index);
                         AddNewRail(nameRail, pos);
@@ -278,11 +293,6 @@ namespace IsoMatrix.Scripts.TileMap
             }
             firstTileManager = path[path.Count-1];
             path.Clear();
-        }
-
-        private void Update()
-        {
-
         }
 
         private void LateUpdate()
@@ -358,6 +368,11 @@ namespace IsoMatrix.Scripts.TileMap
                 hasFirst = false;
                 beforeFirstTileManager = null;
                 firstTileManager = null;
+                map = MapManager.Instance.map;
+                foreach (KeyValuePair<Vector2, TileManager> tileManagerInMap in map)
+                {
+                    tileManagerInMap.Value.OnUnSelect();
+                }
             }
         }
 

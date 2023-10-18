@@ -114,17 +114,173 @@ public class RailGenerate
         }
     }
 
+    public string CheckAroundRailNew(List<RailManager> listRail, Vector3 railCheckPos, RailType TypeCheck)
+    {
+        string typeFirst = "";
+        string typeFinal = "rail_";
+
+        if (TypeCheck == RailType.top)
+        {
+            typeFirst = CheckAroundForRailTop(listRail, railCheckPos);
+        }else if (TypeCheck == RailType.right)
+        {
+            typeFirst = CheckAroundForRailRight(listRail, railCheckPos);
+        }
+
+        if (typeFirst != "")
+        {
+            typeFinal += typeFirst.ToString();
+        }
+        else
+        {
+            typeFinal += TypeCheck.ToString();
+        }
+        return typeFinal;
+    }
+
+    private string CheckAroundForRailRight(List<RailManager> listRail, Vector3 railCheck)
+    {
+        Vector3 LeftPos = new Vector3(railCheck.x, 1, railCheck.z + 1);
+        Vector3 RightPos = new Vector3(railCheck.x, 1, railCheck.z - 1);
+        Vector3 TopPos = new Vector3(railCheck.x+ 1, 1, railCheck.z );
+        Vector3 BottomPos = new Vector3(railCheck.x -+ 1, 1, railCheck.z);
+        string type = "";
+        int count = 0;
+        foreach (var rail in listRail)
+        {
+            if (rail.transform.localPosition == LeftPos && (rail.railType == RailType.right ||  rail.railType == RailType.bottom_right|| rail.railType == RailType.top_right
+                ||rail.railType == RailType.right_bottom_left || rail.railType == RailType.right_bottom_right ||rail.railType == RailType.right_top_left || rail.railType == RailType.right_top_right
+                || rail.railType == RailType.top_top_right || rail.railType == RailType.top_bottom_right
+                ))
+            {
+                type = "left";
+                count++;
+            }else if (rail.transform.localPosition == RightPos && (rail.railType == RailType.right ||  rail.railType == RailType.bottom_left|| rail.railType == RailType.top_left
+               ||rail.railType == RailType.right_bottom_left || rail.railType == RailType.right_bottom_right ||rail.railType == RailType.right_top_left || rail.railType == RailType.right_top_right
+               || rail.railType == RailType.top_top_left || rail.railType == RailType.top_bottom_left
+                      ))
+            {
+                type ="right";
+                count++;
+            }
+        }
+        foreach (var rail in listRail)
+        {
+            if (rail.transform.localPosition == TopPos && (rail.railType == RailType.top ||  rail.railType == RailType.bottom_left|| rail.railType == RailType.bottom_right
+               || rail.railType == RailType.top_top_left || rail.railType == RailType.top_top_right||rail.railType == RailType.top_bottom_left || rail.railType == RailType.top_bottom_right
+               ||rail.railType == RailType.right_top_left || rail.railType == RailType.right_top_right
+                ))
+            {
+                type = "top" + "_" + type;
+                if (count== 2)
+                {
+                    type ="right_top_left";
+                }
+                else if (count ==0)
+                {
+                    type = "";
+                }
+
+                return type;
+            }else if (rail.transform.localPosition == BottomPos && (rail.railType == RailType.top ||  rail.railType == RailType.top_left|| rail.railType == RailType.top_right
+            || rail.railType == RailType.top_top_left || rail.railType == RailType.top_top_right ||rail.railType == RailType.top_bottom_left || rail.railType == RailType.top_bottom_right
+            ||rail.railType == RailType.right_bottom_left || rail.railType == RailType.right_bottom_right
+            ))
+            {
+                 type = "bottom"+ "_" + type;
+                if (count== 2)
+                {
+                     type ="right_bottom_left";
+                }
+                else if (count ==0)
+                {
+                    type = "";
+                }
+                return type;
+            }
+        }
+
+        if (count == 1)
+        {
+            type = "right";
+        }
+
+        return type;
+    }
+
+    private string CheckAroundForRailTop(List<RailManager> listRail, Vector3 railCheck)
+    {
+        Vector3 LeftPos = new Vector3(railCheck.x, 1, railCheck.z + 1);
+        Vector3 RightPos = new Vector3(railCheck.x, 1, railCheck.z - 1);
+        Vector3 TopPos = new Vector3(railCheck.x+ 1, 1, railCheck.z );
+        Vector3 BottomPos = new Vector3(railCheck.x -+ 1, 1, railCheck.z);
+        string type = "";
+        int count = 0;
+        foreach (var rail in listRail)
+        {
+            if (rail.transform.localPosition == TopPos)
+            {
+                if (rail.railType == RailType.top ||  rail.railType == RailType.top_left|| rail.railType == RailType.top_right
+                     || rail.railType == RailType.top_top_left || rail.railType == RailType.top_top_right ||rail.railType == RailType.top_bottom_left || rail.railType == RailType.top_bottom_right
+                     ||rail.railType == RailType.right_bottom_left || rail.railType == RailType.right_bottom_right
+                    )
+                {
+                }
+                type = "bottom";
+                count++;
+            }else if (rail.transform.localPosition == BottomPos)
+            {
+                if (rail.railType == RailType.top ||  rail.railType == RailType.bottom_left|| rail.railType == RailType.bottom_right
+                     || rail.railType == RailType.top_top_left || rail.railType == RailType.top_top_right||rail.railType == RailType.top_bottom_left || rail.railType == RailType.top_bottom_right
+                     ||rail.railType == RailType.right_top_left || rail.railType == RailType.right_top_right
+                    )
+                {
+
+                }
+                type = "top";
+                count++;
+            }
+        }
+        foreach (var rail in listRail)
+        {
+            if (rail.transform.localPosition == LeftPos && (rail.railType == RailType.right ||  rail.railType == RailType.bottom_right|| rail.railType == RailType.top_right
+                ||rail.railType == RailType.right_bottom_left || rail.railType == RailType.right_bottom_right ||rail.railType == RailType.right_top_left || rail.railType == RailType.right_top_right
+                || rail.railType == RailType.top_top_right || rail.railType == RailType.top_bottom_right
+                ))
+            {
+                type = type + "_" +"left";
+                if (count== 2)
+                {
+                    type ="top_top_left";
+                }
+                else if (count ==0)
+                {
+                    type = "";
+                }
+
+                return type;
+            }else if (rail.transform.localPosition == RightPos && (rail.railType == RailType.right ||  rail.railType == RailType.bottom_left|| rail.railType == RailType.top_left
+               ||rail.railType == RailType.right_bottom_left || rail.railType == RailType.right_bottom_right ||rail.railType == RailType.right_top_left || rail.railType == RailType.right_top_right
+               || rail.railType == RailType.top_top_left || rail.railType == RailType.top_bottom_left
+                      ))
+            {
+                type= type + "_" +"right";
+                if (count == 2)
+                {
+                    type ="top_top_right";
+                }
+                return type;
+            }
+        }
+        if (count == 1)
+        {
+            type = "top";
+        }
+        return type;
+    }
+
     public string CheckAroundRail(List<RailManager> listRail, Vector3 railCheckPos, RailType TypeCheck)
     {
-        // if (TypeCheck== "rail_"+RailType.top_bottom_left.ToString() || TypeCheck== "rail_"+RailType.top_top_left.ToString() || TypeCheck== "rail_"+RailType.top_bottom_right.ToString() || TypeCheck== "rail_"+RailType.top_top_right.ToString())
-        // {
-        //     Debug.Log("call_+1");
-        //     return CheckAroundRailTop(listRail, railCheckPos);
-        // }else if (TypeCheck== "rail_"+RailType.right_top_right.ToString() || TypeCheck== "rail_"+RailType.right_top_left.ToString() || TypeCheck== "rail_"+RailType.right_bottom_right.ToString() || TypeCheck== "rail_"+RailType.right_bottom_left.ToString())
-        // {
-        //     Debug.Log("call_+2");
-        //     return CheckAroundRailRight(listRail, railCheckPos);
-        // }
         RailType typeFirst = RailType.none;
         string typeFinal = "rail_";
 
@@ -150,8 +306,6 @@ public class RailGenerate
         {
             typeFinal += TypeCheck.ToString();
         }
-
-
         return typeFinal;
     }
 
@@ -292,7 +446,6 @@ public class RailGenerate
                 (rail.railType == RailType.top ||  rail.railType == RailType.top_left|| rail.railType == RailType.top_right
                  || rail.railType == RailType.top_top_left || rail.railType == RailType.top_top_right ||rail.railType == RailType.top_bottom_left || rail.railType == RailType.top_bottom_right ))
             {
-                Debug.Log("call_+13");
                 count++;
             }
 
@@ -300,7 +453,6 @@ public class RailGenerate
                 (rail.railType == RailType.top ||  rail.railType == RailType.bottom_left|| rail.railType == RailType.bottom_right
                  || rail.railType == RailType.top_top_left || rail.railType == RailType.top_top_right||rail.railType == RailType.top_bottom_left || rail.railType == RailType.top_bottom_right))
             {
-                Debug.Log("call_+15");
                 count++;
             }
         }

@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using IsoMatrix.Scripts.Data;
 using IsoMatrix.Scripts.Level;
 using IsoMatrix.Scripts.Train;
 using IsoMatrix.Scripts.UI;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LocomotiveManager : MonoBehaviour
@@ -14,8 +16,10 @@ public class LocomotiveManager : MonoBehaviour
     [SerializeField] private TrainController _trainController;
     [SerializeField] private Transform trainContainer;
     [SerializeField] private int numTrain = 1;
-    [SerializeField] private List<Transform> posTrain;
+    public List<String> ListTrainConrect { get; set; }
+    private List<String> ListTrainGet = new List<string>();
     private int countTrain = 0;
+    private bool isCheck;
 
     public void OnTrainCollider(GameObject train)
     {
@@ -26,6 +30,25 @@ public class LocomotiveManager : MonoBehaviour
     {
         countTrain = trainContainer.childCount;
         if (countTrain == numTrain)
+        {
+            if (!isCheck)
+            {
+                CheckConrectOrder();
+                isCheck = true;
+            }
+        }
+    }
+
+    private void CheckConrectOrder()
+    {
+        ListTrainGet.Clear();
+        foreach (Transform child in trainContainer.transform)
+        {
+            TrainManager trainManager = child.gameObject.GetComponent<TrainManager>();
+            ListTrainGet.Add(trainManager.TrainName.ToString());
+        }
+
+        if (Enumerable.SequenceEqual(ListTrainConrect, ListTrainGet))
         {
             _trainController.canRun = true;
         }

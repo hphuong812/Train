@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MessagePack;
 using Newtonsoft.Json;
 
@@ -19,4 +20,8 @@ public class LevelItemData
     [Key(3)]
     [JsonProperty("maxRail")]
     public int MaxRail { get; set; }
+
+    [Key(3)]
+    [JsonProperty("trainOrder")]
+    public List<string> TrainOrder { get; set; }
 }

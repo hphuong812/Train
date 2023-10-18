@@ -10,9 +10,9 @@ namespace IsoMatrix.Scripts.Level
 {
     public class LevelController : MonoBehaviour, IEventListener<LevelEvent>
     {
-
+        public float CammeraSize = 7.8f;
+        public LocomotiveManager locomotiveManager;
         public List<GameObject> listTrain;
-        public List<GameObject> listDestroyItem;
         public List<RailCreator> listRail;
         public GameObject PathContainer;
         public event Action DataLoaded;
@@ -42,13 +42,6 @@ namespace IsoMatrix.Scripts.Level
                 if (getItem)
                 {
                     getItem.SetActive(state);
-                }
-            }
-            foreach (var destroyItem in listDestroyItem)
-            {
-                if (destroyItem)
-                {
-                    destroyItem.SetActive(state);
                 }
             }
         }
