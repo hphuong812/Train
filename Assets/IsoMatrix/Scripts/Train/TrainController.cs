@@ -1,4 +1,6 @@
+using System;
 using Cinemachine;
+using IsoMatrix.Scripts.Utilities;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -8,7 +10,7 @@ namespace IsoMatrix.Scripts.Train
     {
         /// <summary>The path to follow</summary>
         [Tooltip("The path to follow")]
-        public CinemachinePathBase m_Path;
+        public TrainPathBase m_Path;
 
         /// <summary>This enum defines the options available for the update method.</summary>
         public enum UpdateMethod
@@ -27,7 +29,7 @@ namespace IsoMatrix.Scripts.Train
 
         /// <summary>How to interpret the Path Position</summary>
         [Tooltip("How to interpret the Path Position.  If set to Path Units, values are as follows: 0 represents the first waypoint on the path, 1 is the second, and so on.  Values in-between are points on the path in between the waypoints.  If set to Distance, then Path Position represents distance along the path.")]
-        public CinemachinePathBase.PositionUnits m_PositionUnits = CinemachinePathBase.PositionUnits.Distance;
+        public TrainPathBase.PositionUnits m_PositionUnits = TrainPathBase.PositionUnits.Distance;
 
         /// <summary>Move the cart with this speed</summary>
         [Tooltip("Move the cart with this speed along the path.  The value is interpreted according to the Position Units setting.")]
@@ -41,7 +43,16 @@ namespace IsoMatrix.Scripts.Train
 
         public bool canRun = false;
 
-        public TileManager tileActive;
+        private Vector3 _defaultPosition;
+        private Quaternion _defaultRotation;
+        private float _defaultMPosition;
+
+        private void Awake()
+        {
+            _defaultPosition = transform.position;
+            _defaultRotation = transform.rotation;
+            _defaultMPosition = m_Position;
+        }
 
         void FixedUpdate()
         {
@@ -75,6 +86,15 @@ namespace IsoMatrix.Scripts.Train
                 transform.position = m_Path.EvaluatePositionAtUnit(m_Position, m_PositionUnits);
                 transform.rotation = m_Path.EvaluateOrientationAtUnit(m_Position, m_PositionUnits);
             }
+        }
+
+        public void RespawnDefault()
+        {
+            canRun = false;
+            // Debug.Log(DefaultTranform.position);
+            transform.position = _defaultPosition;
+            transform.rotation = _defaultRotation;
+            m_Position = _defaultMPosition;
         }
     }
 }

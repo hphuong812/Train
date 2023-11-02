@@ -1,34 +1,34 @@
+using System;
 using System.Collections.Generic;
+using ADN.Meta.Core;
 using Cinemachine;
 using IsoMatrix.Scripts.Train;
+using IsoMatrix.Scripts.Utilities;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace IsoMatrix.Scripts.Rail
 {
-    public class RailCreator : MonoBehaviour
+    public class RailCreator : MonoBehaviour, IEventListener<TrainActionEvent>
     {
-        private CinemachinePath pathTrain_1;
-        public CinemachinePath StartRail;
+        private TrainPath pathTrain_1;
+        public TrainPath StartRail;
         public GameObject PathContainer;
         public TrainController train;
-        private  List<CinemachinePath.Waypoint> generatedWaypoints;
-        private List<CinemachinePath> _listRails = new List<CinemachinePath>();
-        private CinemachinePath ChechWaypoint;
-        private CinemachinePath CurrentChechWaypoint;
-        private  int currentWaypointIndex = 0;
+        public TrainManager TrainManager;
+        private  List<TrainPath.Waypoint> generatedWaypoints = new List<TrainPath.Waypoint>();
+        private List<TrainPath> _listRails = new List<TrainPath>();
+        private TrainPath ChechWaypoint;
+        private TrainPath CurrentChechWaypoint;
         private int indexCheck = 1;
         private bool canRun;
-        private bool lockCheckGroup;
         private int maxPoint = 100;
 
         private void Start()
         {
-            generatedWaypoints = new List<CinemachinePath.Waypoint>();
-            AddWaypoint(StartRail, 0, true);
-            AddWaypoint(StartRail, 1);
-            ChechWaypoint = StartRail;
-            CurrentChechWaypoint = ChechWaypoint;
+            EventManager.Subscribe(this);
+            StartPoint();
+            // TrainManager = train.gameObject.GetComponent<TrainManager>();
 
             // CinemachinePath.Waypoint wp = pathTrain_1.m_Waypoints[1];
             // var pos1= pathTrain_1.transform.localRotation * wp.position + pathTrain_1.transform.localPosition;
@@ -40,6 +40,33 @@ namespace IsoMatrix.Scripts.Rail
             //
             // Debug.Log(pos1+ "||"+pos2);
             // Debug.Log(tangent1+ "||"+tangent2);
+        }
+
+        private void OnDisable()
+        {
+            EventManager.Unsubscribe(this);
+        }
+
+        public void RespawnTrain()
+        {
+            if (TrainManager.transform.parent != TrainManager.DefaultParent)
+            {
+                TrainManager.transform.parent = TrainManager.DefaultParent;
+            }
+            train.RespawnDefault();
+            indexCheck = 1;
+            StartPoint();
+            pathTrain_1.m_Waypoints =generatedWaypoints.ToArray();
+            pathTrain_1.InvalidateDistanceCache();
+        }
+
+        private void StartPoint()
+        {
+            generatedWaypoints.Clear();
+            AddWaypoint(StartRail, 0, true);
+            AddWaypoint(StartRail, 1);
+            ChechWaypoint = StartRail;
+            CurrentChechWaypoint = ChechWaypoint;
         }
 
         public void DragStopped()
@@ -54,10 +81,10 @@ namespace IsoMatrix.Scripts.Rail
             _listRails.Clear();
             foreach (Transform child in PathContainer.transform)
             {
-                CinemachinePath cinemachinePath = child.GetComponent<CinemachinePath>();
-                if (cinemachinePath)
+                TrainPath trainPath = child.GetComponent<TrainPath>();
+                if (trainPath)
                 {
-                    _listRails.Add(cinemachinePath);
+                    _listRails.Add(trainPath);
                 }
             }
         }
@@ -71,15 +98,21 @@ namespace IsoMatrix.Scripts.Rail
                 canRun = true;
             }
 
-            CinemachinePath.Waypoint[] cine = new CinemachinePath.Waypoint[generatedWaypoints.Count];
+            TrainPath.Waypoint[] cine = new TrainPath.Waypoint[generatedWaypoints.Count];
             cine = generatedWaypoints.ToArray();
-            CinemachinePath currentCinePath = gameObject.GetComponent<CinemachinePath>();
+            TrainPath currentCinePath = gameObject.GetComponent<TrainPath>();
             if (!currentCinePath)
             {
-                pathTrain_1 = gameObject.AddComponent<CinemachinePath>();
+                pathTrain_1 = gameObject.AddComponent<TrainPath>();
                 pathTrain_1.m_Waypoints =cine;
                 train.m_Path = pathTrain_1;
             }
+            else
+            {
+                pathTrain_1.m_Waypoints =cine;
+                train.m_Path = pathTrain_1;
+            }
+
         }
 
         public void Run()
@@ -88,6 +121,7 @@ namespace IsoMatrix.Scripts.Rail
             {
                 train.canRun = true;
                 canRun = false;
+                TrainManager.StartRun();
             }
         }
 
@@ -98,19 +132,19 @@ namespace IsoMatrix.Scripts.Rail
             {
                 foreach (var rail in _listRails)
                 {
-                    CinemachinePath.Waypoint wp = ChechWaypoint.m_Waypoints[indexCheck];
+                    TrainPath.Waypoint wp = ChechWaypoint.m_Waypoints[indexCheck];
                     var pos1= ChechWaypoint.transform.localRotation * wp.position + ChechWaypoint.transform.localPosition;
 
-                    CinemachinePath.Waypoint startWP = rail.m_Waypoints[0];
+                    TrainPath.Waypoint startWP = rail.m_Waypoints[0];
                     var pos2= rail.transform.localRotation * startWP.position + rail.transform.localPosition;
-                    CinemachinePath.Waypoint endWP = rail.m_Waypoints[1];
+                    TrainPath.Waypoint endWP = rail.m_Waypoints[1];
                     var pos3= rail.transform.localRotation * endWP.position + rail.transform.localPosition;
                     Vector3 pos4 = Vector3.zero;
                     if (ChechWaypoint.transform.localPosition !=  rail.transform.localPosition)
                     {
                         if (rail.m_Waypoints.Length>2)
                         {
-                            CinemachinePath.Waypoint moreWP = rail.m_Waypoints[2];
+                            TrainPath.Waypoint moreWP = rail.m_Waypoints[2];
                             pos4= rail.transform.localRotation * moreWP.position + rail.transform.localPosition;
                         }
 
@@ -148,12 +182,12 @@ namespace IsoMatrix.Scripts.Rail
             }
         }
 
-        void AddWaypoint(CinemachinePath child, int idx, bool start = false)
+        void AddWaypoint(TrainPath child, int idx, bool start = false)
         {
-            if(!child.GetComponent<CinemachinePath>()) return;
-            CinemachinePath childCinemachinePath = child.GetComponent<CinemachinePath>();
-            CinemachinePath.Waypoint wp = childCinemachinePath.m_Waypoints[idx];
-            CinemachinePath.Waypoint targetWP = new CinemachinePath.Waypoint();
+            if(!child.GetComponent<TrainPath>()) return;
+            TrainPath childTrainPath = child.GetComponent<TrainPath>();
+            TrainPath.Waypoint wp = childTrainPath.m_Waypoints[idx];
+            TrainPath.Waypoint targetWP = new TrainPath.Waypoint();
             targetWP.position = child.transform.localRotation * wp.position + child.transform.localPosition;
             var changeVar = 1;
             if (!start)
@@ -166,6 +200,19 @@ namespace IsoMatrix.Scripts.Rail
             targetWP.tangent = child.transform.localRotation * wp.tangent * changeVar;
             targetWP.roll = wp.roll;
             generatedWaypoints.Add(targetWP);
+        }
+
+        public void OnEventTriggered(TrainActionEvent e)
+        {
+            if (e.type == TrainActionEventType.Run)
+            {
+                DragStopped();
+            }
+
+            if (e.type == TrainActionEventType.Reset)
+            {
+                RespawnTrain();
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ namespace IsoMatrix.Scripts.Level
     public class LevelController : MonoBehaviour, IEventListener<LevelEvent>
     {
         public float CammeraSize = 7.8f;
+        public Vector3 CameraPos = new Vector3(-0.8f, 7.8f, -2.1f);
         public LocomotiveManager locomotiveManager;
         public List<GameObject> listTrain;
         public List<RailCreator> listRail;

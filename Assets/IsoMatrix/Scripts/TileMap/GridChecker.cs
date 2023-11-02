@@ -143,7 +143,7 @@ namespace IsoMatrix.Scripts.TileMap
                             {
                                 if (listRail[i].gameObject.transform.localPosition == new Vector3(tileManager.GridLocation.x,1,tileManager.GridLocation.y) && !listRail[i].isFix)
                                 {
-                                    Destroy(listRail[i].gameObject);
+                                    listRail[i].BeforeDestroy();
                                     listRail.RemoveAt(i);
                                     return;
                                 }

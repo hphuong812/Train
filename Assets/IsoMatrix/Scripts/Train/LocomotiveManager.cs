@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using ADN.Meta.Core;
 using IsoMatrix.Scripts.Data;
 using IsoMatrix.Scripts.Level;
 using IsoMatrix.Scripts.Train;
@@ -9,7 +10,7 @@ using IsoMatrix.Scripts.UI;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class LocomotiveManager : MonoBehaviour
+public class LocomotiveManager : MonoBehaviour, IEventListener<TrainActionEvent>
 {
     [SerializeField] private LayerMask exitLayerMask;
     [SerializeField] private LayerMask completeLayerMask;
@@ -20,6 +21,15 @@ public class LocomotiveManager : MonoBehaviour
     private List<String> ListTrainGet = new List<string>();
     private int countTrain = 0;
     private bool isCheck;
+
+    private void Start()
+    {
+        EventManager.Subscribe(this);
+    }
+    private void OnDisable()
+    {
+        EventManager.Unsubscribe(this);
+    }
 
     public void OnTrainCollider(GameObject train)
     {
@@ -63,6 +73,14 @@ public class LocomotiveManager : MonoBehaviour
         if (LayerMarkChecker.LayerInLayerMask(other.gameObject.layer, completeLayerMask))
         {
             ScreenEvent.Trigger(ScreenEventType.ScreenIn);
+        }
+    }
+
+    public void OnEventTriggered(TrainActionEvent e)
+    {
+        if (e.type == TrainActionEventType.Reset)
+        {
+            isCheck = false;
         }
     }
 }

@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using Cinemachine;
+using IsoMatrix.Scripts.Utilities;
 
 public class TrackCreator : MonoBehaviour
 {
-    [SerializeField] CinemachinePath track;
+    [SerializeField] TrainPath track;
     [SerializeField] bool loopedTrack = false;
 
-    private  CinemachinePath.Waypoint[] generatedWaypoints;
+    private  TrainPath.Waypoint[] generatedWaypoints;
     private int waypointCount;
     int currentWaypointIndex = 0;
 
@@ -25,7 +26,7 @@ public class TrackCreator : MonoBehaviour
 
         waypointCount = loopedTrack ? track.transform.childCount : track.transform.childCount + 1;
 
-        generatedWaypoints = new CinemachinePath.Waypoint[waypointCount];
+        generatedWaypoints = new TrainPath.Waypoint[waypointCount];
 
         for (int i = 0; i < track.transform.childCount; i++)
         {
@@ -48,10 +49,10 @@ public class TrackCreator : MonoBehaviour
 
     void AddWaypoint(Transform child, int idx)
             {
-                if(!child.GetComponent<CinemachinePath>()) return;
-                CinemachinePath childCinemachinePath = child.GetComponent<CinemachinePath>();
-                CinemachinePath.Waypoint wp = childCinemachinePath.m_Waypoints[idx];
-                CinemachinePath.Waypoint targetWP = new CinemachinePath.Waypoint();
+                if(!child.GetComponent<TrainPath>()) return;
+                TrainPath childTrainPath = child.GetComponent<TrainPath>();
+                TrainPath.Waypoint wp = childTrainPath.m_Waypoints[idx];
+                TrainPath.Waypoint targetWP = new TrainPath.Waypoint();
                 targetWP.position = child.localRotation * wp.position + child.localPosition;
                 targetWP.tangent = child.localRotation * wp.tangent;
                 targetWP.roll = wp.roll;

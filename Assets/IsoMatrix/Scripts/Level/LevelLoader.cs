@@ -88,7 +88,7 @@ namespace IsoMatrix.Scripts.Level
             levelManager.AddListRailCreator(levelController.listRail);
             levelManager.GetPathContainer(levelController.PathContainer);
             levelManager.AddMaxRail(levelItemData.MaxRail);
-            levelManager.UpdateCameraSize(levelController.CammeraSize);
+            levelManager.UpdateCameraSize(levelController.CammeraSize, levelController.CameraPos);
             // levelManager.GamePause.AddListener(()=>
             // {
             //     levelController.CurrentLevelCompleted.Invoke();

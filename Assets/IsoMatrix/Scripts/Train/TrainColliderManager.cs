@@ -1,8 +1,10 @@
+using System;
+using ADN.Meta.Core;
 using UnityEngine;
 
 namespace IsoMatrix.Scripts.Train
 {
-    public class TrainColliderManager : MonoBehaviour
+    public class TrainColliderManager : MonoBehaviour,  IEventListener<TrainActionEvent>
     {
         [SerializeField]
         private LayerMask trainLayerMask;
@@ -13,6 +15,15 @@ namespace IsoMatrix.Scripts.Train
 
         private bool locomotiveMatched;
         public bool LocomotiveMatched => locomotiveMatched;
+
+        private void Start()
+        {
+            EventManager.Subscribe(this);
+        }
+        private void OnDisable()
+        {
+            EventManager.Unsubscribe(this);
+        }
 
         private void OnCollisionEnter(Collision other)
         {
@@ -46,6 +57,14 @@ namespace IsoMatrix.Scripts.Train
                     locomotiveMatched = true;
                     locomotiveManager.OnTrainCollider(gameObject);
                 }
+            }
+        }
+
+        public void OnEventTriggered(TrainActionEvent e)
+        {
+            if (e.type == TrainActionEventType.Reset)
+            {
+                locomotiveMatched = false;
             }
         }
     }

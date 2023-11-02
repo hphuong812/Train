@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using ADN.Meta.Core;
 using IsoMatrix.Scripts.Rail;
 using IsoMatrix.Scripts.TileMap;
+using IsoMatrix.Scripts.Train;
 using IsoMatrix.Scripts.UI;
 using UnityEngine;
 using UnityEngine.Events;
@@ -113,18 +114,20 @@ namespace IsoMatrix.Scripts.Level
 
         public void TrainAction()
         {
-            foreach (var railCreator in listRailCreator)
-            {
-                railCreator.DragStopped();
-            }
+            TrainActionEvent.Trigger(TrainActionEventType.Run);
+            // foreach (var railCreator in listRailCreator)
+            // {
+            //     railCreator.DragStopped();
+            // }
         }
 
         public void TrainRevert()
         {
-            foreach (var railCreator in listRailCreator)
-            {
-                railCreator.DragStopped();
-            }
+            TrainActionEvent.Trigger(TrainActionEventType.Reset);
+            // foreach (var railCreator in listRailCreator)
+            // {
+            //     railCreator.RespawnTrain();
+            // }
         }
 
         public void AddListRailCreator(List<RailCreator> levelControllerListTrain)
@@ -137,9 +140,10 @@ namespace IsoMatrix.Scripts.Level
             ScreenEvent.Trigger(ScreenEventType.ScreenOut);
         }
 
-        public void UpdateCameraSize(float levelControllerCammeraSize)
+        public void UpdateCameraSize(float levelControllerCameraSize, Vector3 levelControllerCameraPos)
         {
-            isoMatrixCamera.orthographicSize = levelControllerCammeraSize;
+            isoMatrixCamera.orthographicSize = levelControllerCameraSize;
+            isoMatrixCamera.transform.position = levelControllerCameraPos;
         }
     }
 }
