@@ -6,7 +6,9 @@ using UnityEngine.Events;
 public enum TrainName
 {
     Kimbap,
-    Tokbokki
+    Tokbokki,
+    Banhtet,
+    Banhmi
 }
 public class TrainManager : MonoBehaviour
 {

@@ -67,7 +67,6 @@ GameObject:
   - component: {fileID: 4255490808421206421}
   - component: {fileID: 5813095694705327301}
   - component: {fileID: 744060913632711357}
-  - component: {fileID: 532990507744444700}
   m_Layer: 14
   m_Name: LocomotiveCart
   m_TagString: Untagged
@@ -179,63 +178,6 @@ MonoBehaviour:
   _trainController: {fileID: 1960428650476291848}
   trainContainer: {fileID: 2614801675873665413}
   numTrain: 2
---- !u!114 &532990507744444700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3366416053139873712}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fe91dc294731a9428c0941ea7579110, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  complexMaskingMode: 0
-  drawingMode: 1
-  outlineLayer: 0
-  outlineTargets:
-  - IsVisible: 1
-    CutoutMask: 8
-    edgeDilateAmount: 5
-    frontEdgeDilateAmount: 5
-    backEdgeDilateAmount: 5
-    renderer: {fileID: 316327531035706348}
-    SubmeshIndex: 0
-    BoundsMode: 0
-    Bounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0.5, y: 0.5, z: 0.5}
-    CutoutThreshold: 0.5
-    CullMode: 2
-    cutoutTextureName: 
-    DilateRenderingMode: 0
-    cutoutTextureIndex: 0
-  renderStyle: 1
-  outlineParameters:
-    enabled: 1
-    color: {r: 0, g: 0, b: 0, a: 1}
-    dilateShift: 1
-    blurShift: 0
-    fillPass:
-      shader: {fileID: 0}
-      serializedProperties: []
-  backParameters:
-    enabled: 1
-    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-    dilateShift: 1
-    blurShift: 1
-    fillPass:
-      shader: {fileID: 0}
-      serializedProperties: []
-  frontParameters:
-    enabled: 1
-    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-    dilateShift: 1
-    blurShift: 1
-    fillPass:
-      shader: {fileID: 0}
-      serializedProperties: []
 --- !u!1 &5180457288462337550
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,13 +292,24 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 9bd68b545aed4452b9e7843ab5eb5673, type: 2}
+    - target: {fileID: -6487585205223803653, guid: 8e1b84a05389a4858a64d2dfbf3c6438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9bd68b545aed4452b9e7843ab5eb5673, type: 2}
     - target: {fileID: 919132149155446097, guid: 8e1b84a05389a4858a64d2dfbf3c6438,
         type: 3}
       propertyPath: m_Name
       value: locomotive
       objectReference: {fileID: 0}
+    - target: {fileID: 5574048756840763917, guid: 8e1b84a05389a4858a64d2dfbf3c6438,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5574048756840763917, guid: 8e1b84a05389a4858a64d2dfbf3c6438, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8e1b84a05389a4858a64d2dfbf3c6438,
@@ -364,12 +317,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1528892187007226806}
   m_SourcePrefab: {fileID: 100100000, guid: 8e1b84a05389a4858a64d2dfbf3c6438, type: 3}
---- !u!23 &316327531035706348 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 8e1b84a05389a4858a64d2dfbf3c6438,
-    type: 3}
-  m_PrefabInstance: {fileID: 1414771948871606120}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1452691160870992003 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8e1b84a05389a4858a64d2dfbf3c6438,

@@ -68,10 +68,14 @@ public class LocomotiveManager : MonoBehaviour, IEventListener<TrainActionEvent>
     {
         if (LayerMarkChecker.LayerInLayerMask(other.gameObject.layer, exitLayerMask))
         {
+            Debug.Log("dsdsds");
+            other.gameObject.SetActive(false);
             LevelEvent.Trigger(LevelEventType.NextLevel, GameConfig.Instance.CurrentLevel++);
+
         }
         if (LayerMarkChecker.LayerInLayerMask(other.gameObject.layer, completeLayerMask))
         {
+            other.gameObject.SetActive(false);
             ScreenEvent.Trigger(ScreenEventType.ScreenIn);
         }
     }

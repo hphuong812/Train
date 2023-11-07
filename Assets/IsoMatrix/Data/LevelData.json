@@ -6,42 +6,42 @@
       "name": "lv1",
       "levelKey" : "Level_1",
       "maxRail": 9,
-      "trainOrder":["Kimbap","Tokbokki"]
+      "trainOrder":["Kimbap"]
     },
     {
       "id": 1,
       "name": "lv2",
       "levelKey" : "Level_2",
       "maxRail": 11,
-      "trainOrder":["Kimbap","Tokbokki"]
+      "trainOrder":["Tokbokki"]
     },
     {
       "id": 2,
       "name": "lv3",
       "levelKey" : "Level_3",
       "maxRail": 11,
-      "trainOrder":["Kimbap","Tokbokki"]
+      "trainOrder":["Tokbokki","Kimbap"]
     },
     {
       "id": 3,
       "name": "lv4",
       "levelKey" : "Level_4",
       "maxRail": 11,
-      "trainOrder":["Kimbap","Tokbokki"]
+      "trainOrder":["Kimbap","Kimbap"]
     },
     {
       "id": 4,
       "name": "lv5",
       "levelKey" : "Level_5",
-      "maxRail": 11,
-      "trainOrder":["Kimbap","Tokbokki"]
+      "maxRail": 5,
+      "trainOrder":["Tokbokki","Kimbap"]
     },
     {
       "id": 5,
       "name": "lv6",
       "levelKey" : "Level_6",
       "maxRail": 11,
-      "trainOrder":["Kimbap","Tokbokki"]
+      "trainOrder":["Banhtet","Kimbap"]
     },
     {
       "id": 6,

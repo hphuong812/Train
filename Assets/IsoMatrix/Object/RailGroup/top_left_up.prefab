@@ -137,7 +137,7 @@ MonoBehaviour:
     cutoutTextureName: 
     DilateRenderingMode: 0
     cutoutTextureIndex: 0
-  renderStyle: 1
+  renderStyle: 2
   outlineParameters:
     enabled: 1
     color: {r: 0, g: 0, b: 0, a: 1}
@@ -147,7 +147,7 @@ MonoBehaviour:
       shader: {fileID: 0}
       serializedProperties: []
   backParameters:
-    enabled: 1
+    enabled: 0
     color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
     dilateShift: 1
     blurShift: 1
@@ -156,9 +156,9 @@ MonoBehaviour:
       serializedProperties: []
   frontParameters:
     enabled: 1
-    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    color: {r: 0, g: 0, b: 0, a: 1}
     dilateShift: 1
-    blurShift: 1
+    blurShift: 0
     fillPass:
       shader: {fileID: 0}
       serializedProperties: []
@@ -282,6 +282,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1519245699915410631}
     m_Modifications:
+    - target: {fileID: -2897629615030085327, guid: 8ed20e6078d4c4c0bb80ace70cdd5a95,
+        type: 3}
+      propertyPath: outlineParameters.color.b
+      value: 0.015686275
+      objectReference: {fileID: 0}
+    - target: {fileID: -2897629615030085327, guid: 8ed20e6078d4c4c0bb80ace70cdd5a95,
+        type: 3}
+      propertyPath: outlineParameters.color.g
+      value: 0.92156863
+      objectReference: {fileID: 0}
+    - target: {fileID: -2897629615030085327, guid: 8ed20e6078d4c4c0bb80ace70cdd5a95,
+        type: 3}
+      propertyPath: outlineParameters.color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 464238775354654785, guid: 8ed20e6078d4c4c0bb80ace70cdd5a95,
         type: 3}
       propertyPath: m_Name

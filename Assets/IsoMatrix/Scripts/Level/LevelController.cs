@@ -13,7 +13,7 @@ namespace IsoMatrix.Scripts.Level
         public float CammeraSize = 7.8f;
         public Vector3 CameraPos = new Vector3(-0.8f, 7.8f, -2.1f);
         public LocomotiveManager locomotiveManager;
-        public List<GameObject> listTrain;
+        public List<GameObject> listItem;
         public List<RailCreator> listRail;
         public GameObject PathContainer;
         public event Action DataLoaded;
@@ -38,7 +38,7 @@ namespace IsoMatrix.Scripts.Level
 
         public void ChangeStateItem(bool state)
         {
-            foreach (var getItem in listTrain)
+            foreach (var getItem in listItem)
             {
                 if (getItem)
                 {

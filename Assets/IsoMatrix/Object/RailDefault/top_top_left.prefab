@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1927137505648558862}
   - component: {fileID: -7801977627106349057}
   - component: {fileID: 3382471238860132925}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: top_top_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,7 +251,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: e9357be8c0e914110b61c62f80f5e9a4,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -470,7 +470,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 38e4cb45dc6bc48fcb104b82b1eaf578,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

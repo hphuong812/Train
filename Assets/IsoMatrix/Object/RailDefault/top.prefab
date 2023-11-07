@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -5709433436894799192}
   - component: {fileID: 3969192871504466025}
   - component: {fileID: 1874731274691458395}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231,7 +231,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 38e4cb45dc6bc48fcb104b82b1eaf578,
         type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
