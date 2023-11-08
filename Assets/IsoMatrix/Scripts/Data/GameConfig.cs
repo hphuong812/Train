@@ -17,6 +17,6 @@ namespace IsoMatrix.Scripts.Data
             }
         }
         public List<LevelItemData> LevelItemList { get; set; } = new();
-        public int CurrentLevel = 4;
+        public int CurrentLevel = 0;
     }
 }

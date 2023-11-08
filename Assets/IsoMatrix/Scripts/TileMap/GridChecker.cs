@@ -53,6 +53,7 @@ namespace IsoMatrix.Scripts.TileMap
         {
             maxLevelRail = maxRail;
             _uiController.UpdateCountRail(maxLevelRail);
+            _uiController.UpdateLevel();
         }
 
         public void GetFixPath()
@@ -88,7 +89,7 @@ namespace IsoMatrix.Scripts.TileMap
                         TileManager tileManager = hit.transform.gameObject.GetComponent<TileManager>();
                         if (!isDestroy)
                         {
-                            if (!hasFirst)
+                            if (!hasFirst && !tileManager.isBlock)
                             {
                                 var index = -1;
                                 firstTileManager = tileManager;

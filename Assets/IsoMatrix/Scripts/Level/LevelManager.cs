@@ -7,6 +7,7 @@ using IsoMatrix.Scripts.UI;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace IsoMatrix.Scripts.Level
 {
@@ -22,6 +23,7 @@ namespace IsoMatrix.Scripts.Level
             get => canReset;
             set => canReset = value;
         }
+        [FormerlySerializedAs("SpawnCardMissionManager")] public SpawnCardOrderManager spawnCardOrderManager;
 
         private GameObject pathContainerGO;
         private Transform exitPosition;
@@ -29,13 +31,15 @@ namespace IsoMatrix.Scripts.Level
         public UnityEvent GameWon;
         public UnityEvent GameLosed;
 
-
+        private LevelItemData levelItemData;
+        private CardOrderManager _cardOrderManager;
 
         private bool canReset = true;
         private bool isWon;
         public bool IsWon => isWon;
         private float _timeStart;
         private List<RailCreator> listRailCreator = new List<RailCreator>();
+        private List<CardOrderManager> listCardOrder= new List<CardOrderManager>();
 
         private void OnEnable()
         {
@@ -52,9 +56,32 @@ namespace IsoMatrix.Scripts.Level
             ListTrain = new List<GameObject> (listItem);
         }
 
-        public void AddMaxRail(int maxRail)
+        public void AddItemData(LevelItemData levelItemData)
         {
-            gridChecker.AddMaxRail(maxRail);
+            this.levelItemData = levelItemData;
+            gridChecker.AddMaxRail(this.levelItemData.MaxRail);
+            SpawnCardOrder();
+        }
+
+        private void SpawnCardOrder()
+        {
+            RemoveCard();
+            listCardOrder.Clear();
+            for (int i = 0; i < levelItemData.TrainOrder.Count; i++)
+            {Debug.Log("adads");
+                _cardOrderManager = spawnCardOrderManager.SpawnCard();
+                _cardOrderManager.SetUpMission(levelItemData.TrainOrder[i], i+1);
+                listCardOrder.Add(_cardOrderManager);
+            }
+        }
+
+        public void RemoveCard()
+        {
+            Debug.Log("calll");
+            foreach (var card in listCardOrder)
+            {
+                Destroy(card.gameObject);
+            }
         }
 
         public void PauseGame()
@@ -90,6 +117,7 @@ namespace IsoMatrix.Scripts.Level
 
         public void ReloadData()
         {
+            // RemoveCard();
         }
 
         public void GetPathContainer(GameObject pathContainer)
@@ -110,6 +138,10 @@ namespace IsoMatrix.Scripts.Level
         public void OnEventTriggered(LevelEvent e)
         {
 
+            if (e.type == LevelEventType.NextLevel)
+            {
+
+            }
         }
 
         public void TrainAction()
