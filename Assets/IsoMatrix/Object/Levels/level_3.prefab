@@ -2147,6 +2147,11 @@ PrefabInstance:
       propertyPath: TrainName
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 370688721217292018, guid: caf30c0cad5674f68b540f494c404ae3,
+        type: 3}
+      propertyPath: DefaultParent
+      value: 
+      objectReference: {fileID: 8984060019618431450}
     - target: {fileID: 2155202370045621164, guid: caf30c0cad5674f68b540f494c404ae3,
         type: 3}
       propertyPath: autoKill
