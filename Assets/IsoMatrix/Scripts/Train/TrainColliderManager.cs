@@ -1,6 +1,7 @@
 using System;
 using ADN.Meta.Core;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace IsoMatrix.Scripts.Train
 {
@@ -15,6 +16,8 @@ namespace IsoMatrix.Scripts.Train
 
         private bool locomotiveMatched;
         public bool LocomotiveMatched => locomotiveMatched;
+        public UnityEvent TrainReset;
+        public UnityEvent TrainMatch;
 
         private void Start()
         {
@@ -29,9 +32,14 @@ namespace IsoMatrix.Scripts.Train
         {
             if (LayerMarkChecker.LayerInLayerMask(other.gameObject.layer, trainLayerMask))
             {
+                if (locomotiveMatched)
+                {
+                    return;
+                }
                 if (_trainController)
                 {
                     _trainController.canRun = false;
+                    TrainMatch?.Invoke();
                 }
 
                 TrainColliderManager colliderTrainColliderManager = other.gameObject.GetComponent<TrainColliderManager>();
@@ -40,6 +48,7 @@ namespace IsoMatrix.Scripts.Train
                     if (colliderTrainColliderManager.LocomotiveMatched)
                     {
                         gameObject.transform.parent = other.gameObject.transform.parent.transform;
+                        locomotiveMatched = true;
                     }
                 }
             }
@@ -52,6 +61,7 @@ namespace IsoMatrix.Scripts.Train
                     if (_trainController)
                     {
                         _trainController.canRun = false;
+                        TrainMatch?.Invoke();
                     }
 
                     locomotiveMatched = true;
@@ -65,6 +75,7 @@ namespace IsoMatrix.Scripts.Train
             if (e.type == TrainActionEventType.Reset)
             {
                 locomotiveMatched = false;
+                TrainReset.Invoke();
             }
         }
     }

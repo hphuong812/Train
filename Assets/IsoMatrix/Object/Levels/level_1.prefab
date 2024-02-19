@@ -921,6 +921,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Grid (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 550297993135052904, guid: 5d4068b59fe5847e3a648a313eb80f47,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5179368158298462874, guid: 5d4068b59fe5847e3a648a313eb80f47,
         type: 3}
       propertyPath: isBlock
@@ -1638,12 +1643,12 @@ PrefabInstance:
     - target: {fileID: -4829260998335236212, guid: 412e498ec1cdc475da79c581cd1deed5,
         type: 3}
       propertyPath: outlineTargets.Array.data[0].IsVisible
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4829260998335236212, guid: 412e498ec1cdc475da79c581cd1deed5,
         type: 3}
       propertyPath: outlineTargets.Array.data[1].IsVisible
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4144716003234568833, guid: 412e498ec1cdc475da79c581cd1deed5,
         type: 3}

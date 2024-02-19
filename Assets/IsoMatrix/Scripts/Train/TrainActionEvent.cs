@@ -5,7 +5,8 @@ namespace IsoMatrix.Scripts.Train
     public enum TrainActionEventType
     {
         Run,
-        Reset
+        Reset,
+        LocomotiveRun,
     }
     public struct TrainActionEvent : IEvent
     {

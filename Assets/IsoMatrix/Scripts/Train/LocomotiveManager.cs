@@ -9,6 +9,8 @@ using IsoMatrix.Scripts.Train;
 using IsoMatrix.Scripts.UI;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 public class LocomotiveManager : MonoBehaviour, IEventListener<TrainActionEvent>
 {
@@ -17,6 +19,7 @@ public class LocomotiveManager : MonoBehaviour, IEventListener<TrainActionEvent>
     [SerializeField] private TrainController _trainController;
     [SerializeField] private Transform trainContainer;
     [SerializeField] private int numTrain = 1;
+    public UnityEvent OnRun;
     public List<String> ListTrainConrect { get; set; }
     private List<String> ListTrainGet = new List<string>();
     private int countTrain = 0;
@@ -60,8 +63,14 @@ public class LocomotiveManager : MonoBehaviour, IEventListener<TrainActionEvent>
 
         if (Enumerable.SequenceEqual(ListTrainConrect, ListTrainGet))
         {
-            _trainController.canRun = true;
+            TrainActionEvent.Trigger(TrainActionEventType.LocomotiveRun);
+            OnRun.Invoke();
         }
+    }
+
+    public void CallRun()
+    {
+        _trainController.canRun = true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -69,7 +78,13 @@ public class LocomotiveManager : MonoBehaviour, IEventListener<TrainActionEvent>
         if (LayerMarkChecker.LayerInLayerMask(other.gameObject.layer, exitLayerMask))
         {
             other.gameObject.SetActive(false);
-            LevelEvent.Trigger(LevelEventType.NextLevel, GameConfig.Instance.CurrentLevel++);
+            Destroy(gameObject);
+            GameConfig.Instance.CurrentLevel += 1;
+            if (GameConfig.Instance.CurrentLevel >14)
+            {
+                GameConfig.Instance.CurrentLevel = Random.Range(0, 14);
+            }
+            LevelEvent.Trigger(LevelEventType.NextLevel, GameConfig.Instance.CurrentLevel);
 
         }
         if (LayerMarkChecker.LayerInLayerMask(other.gameObject.layer, completeLayerMask))

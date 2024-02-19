@@ -385,7 +385,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: out
+          m_StringArgument: out_8
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &4229210604957291946
@@ -498,7 +498,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   loopType: 0
   loops: 1
-  id: load
+  id: load_8
   isRelative: 0
   isFrom: 1
   isIndependentUpdate: 1
@@ -617,7 +617,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   loopType: 0
   loops: 1
-  id: out
+  id: out_8
   isRelative: 0
   isFrom: 0
   isIndependentUpdate: 1
@@ -1063,7 +1063,7 @@ PrefabInstance:
     - target: {fileID: 7116353433220362938, guid: 5d4068b59fe5847e3a648a313eb80f47,
         type: 3}
       propertyPath: isBlock
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -1204,7 +1204,7 @@ PrefabInstance:
     - target: {fileID: 6950994394345302281, guid: 9db82911dc393479f887f71d251b3756,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 6950994394345302281, guid: 9db82911dc393479f887f71d251b3756,
         type: 3}
@@ -1542,7 +1542,7 @@ PrefabInstance:
     - target: {fileID: 2522853588720402359, guid: 2ac86c3c3f33949229d8f0bfe77efbbd,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 2522853588720402359, guid: 2ac86c3c3f33949229d8f0bfe77efbbd,
         type: 3}
@@ -2320,7 +2320,7 @@ PrefabInstance:
     - target: {fileID: -4829260998335236212, guid: 412e498ec1cdc475da79c581cd1deed5,
         type: 3}
       propertyPath: outlineTargets.Array.data[0].IsVisible
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4829260998335236212, guid: 412e498ec1cdc475da79c581cd1deed5,
         type: 3}
@@ -2493,7 +2493,7 @@ PrefabInstance:
     - target: {fileID: -4829260998335236212, guid: 412e498ec1cdc475da79c581cd1deed5,
         type: 3}
       propertyPath: outlineTargets.Array.data[1].IsVisible
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4144716003234568833, guid: 412e498ec1cdc475da79c581cd1deed5,
         type: 3}
@@ -2656,12 +2656,12 @@ PrefabInstance:
     - target: {fileID: -4829260998335236212, guid: 412e498ec1cdc475da79c581cd1deed5,
         type: 3}
       propertyPath: outlineTargets.Array.data[0].IsVisible
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4829260998335236212, guid: 412e498ec1cdc475da79c581cd1deed5,
         type: 3}
       propertyPath: outlineTargets.Array.data[1].IsVisible
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4144716003234568833, guid: 412e498ec1cdc475da79c581cd1deed5,
         type: 3}

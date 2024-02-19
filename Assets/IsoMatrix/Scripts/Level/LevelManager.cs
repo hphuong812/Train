@@ -11,7 +11,7 @@ using UnityEngine.Serialization;
 
 namespace IsoMatrix.Scripts.Level
 {
-    public class LevelManager : MonoBehaviour, IEventListener<LevelEvent>
+    public class LevelManager : MonoBehaviour, IEventListener<LevelEvent>, IEventListener<TrainActionEvent>
     {
         [SerializeField]
         private GridChecker gridChecker;
@@ -30,6 +30,7 @@ namespace IsoMatrix.Scripts.Level
         public UnityEvent GamePause;
         public UnityEvent GameWon;
         public UnityEvent GameLosed;
+        public UnityEvent LocomotiveRun;
 
         private LevelItemData levelItemData;
         private CardOrderManager _cardOrderManager;
@@ -43,7 +44,13 @@ namespace IsoMatrix.Scripts.Level
 
         private void OnEnable()
         {
-            EventManager.Subscribe(this);
+            EventManager.Subscribe<LevelEvent>(this);
+            EventManager.Subscribe<TrainActionEvent>(this);
+        }
+        private void OnDisable()
+        {
+            EventManager.Unsubscribe<LevelEvent>(this);
+            EventManager.Unsubscribe<TrainActionEvent>(this);
         }
 
         // public void Start()
@@ -68,7 +75,7 @@ namespace IsoMatrix.Scripts.Level
             RemoveCard();
             listCardOrder.Clear();
             for (int i = 0; i < levelItemData.TrainOrder.Count; i++)
-            {Debug.Log("adads");
+            {
                 _cardOrderManager = spawnCardOrderManager.SpawnCard();
                 _cardOrderManager.SetUpMission(levelItemData.TrainOrder[i], i+1);
                 listCardOrder.Add(_cardOrderManager);
@@ -77,7 +84,6 @@ namespace IsoMatrix.Scripts.Level
 
         public void RemoveCard()
         {
-            Debug.Log("calll");
             foreach (var card in listCardOrder)
             {
                 Destroy(card.gameObject);
@@ -176,6 +182,14 @@ namespace IsoMatrix.Scripts.Level
         {
             isoMatrixCamera.orthographicSize = levelControllerCameraSize;
             isoMatrixCamera.transform.position = levelControllerCameraPos;
+        }
+
+        public void OnEventTriggered(TrainActionEvent e)
+        {
+            if (e.type == TrainActionEventType.LocomotiveRun)
+            {
+                LocomotiveRun?.Invoke();
+            }
         }
     }
 }
