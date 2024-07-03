@@ -82,8 +82,10 @@ namespace IsoMatrix.Scripts.Train
         {
             if (m_Path != null)
             {
+                // Debug.Log(distanceAlongPath);
                 m_Position = m_Path.StandardizeUnit(distanceAlongPath, m_PositionUnits);
                 transform.position = m_Path.EvaluatePositionAtUnit(m_Position, m_PositionUnits);
+                // Debug.Log(m_Path.EvaluatePosition(m_Position));
                 transform.rotation = m_Path.EvaluateOrientationAtUnit(m_Position, m_PositionUnits);
             }
         }

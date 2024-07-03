@@ -7,6 +7,7 @@ namespace IsoMatrix.Scripts.Train
         Run,
         Reset,
         LocomotiveRun,
+        Update,
     }
     public struct TrainActionEvent : IEvent
     {

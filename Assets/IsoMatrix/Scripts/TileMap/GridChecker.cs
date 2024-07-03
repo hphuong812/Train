@@ -3,7 +3,9 @@ using System.Linq;
 using ADN.Meta.Core;
 using IsoMatrix.Scripts.Level;
 using IsoMatrix.Scripts.Rail;
+using IsoMatrix.Scripts.Train;
 using IsoMatrix.Scripts.UI;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
@@ -22,6 +24,7 @@ namespace IsoMatrix.Scripts.TileMap
 
         public GameObject prefabContainer;
         public LayerMask TileLayerMask;
+        public LayerMask TrainLayerMask;
 
         private bool hasFirst;
         private bool isCreate;
@@ -82,6 +85,15 @@ namespace IsoMatrix.Scripts.TileMap
                 Ray ray = Camera.main.ScreenPointToRay(touchPosition);
 
                 RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, maxDistance: 200f))
+                {
+                    if (LayerMarkChecker.LayerInLayerMask(hit.transform.gameObject.layer, TrainLayerMask))
+                    {
+                        TrainController train = hit.transform.gameObject.GetComponent<TrainController>();
+                        train.canRun = !train.canRun;
+                        Debug.Log(train.canRun);
+                    }
+                }
                 if(Physics.Raycast(ray, out hit, maxDistance: 200f, TileLayerMask))
                 {
                     if (LayerMarkChecker.LayerInLayerMask(hit.transform.gameObject.layer, TileLayerMask))
@@ -204,6 +216,18 @@ namespace IsoMatrix.Scripts.TileMap
                         return RailType.top_bottom_left;
                     case RailType.top_top_right:
                         return RailType.top_bottom_right;
+                    case RailType.top:
+                        return RailType.right;
+                    case RailType.right:
+                        return RailType.top;
+                    case RailType.bottom_right:
+                        return RailType.bottom_left;
+                    case RailType.bottom_left:
+                        return RailType.bottom_right;
+                    case RailType.top_right:
+                        return RailType.top_left;
+                    case RailType.top_left:
+                        return RailType.top_right;
                 }
             }
 
@@ -374,6 +398,7 @@ namespace IsoMatrix.Scripts.TileMap
                 {
                     tileManagerInMap.Value.OnUnSelect();
                 }
+                TrainActionEvent.Trigger(TrainActionEventType.Update);
             }
         }
 

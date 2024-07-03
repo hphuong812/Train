@@ -5,7 +5,7 @@
       "id": 0,
       "name": "lv1",
       "levelKey" : "Level_1",
-      "maxRail": 3,
+      "maxRail": 10,
       "trainOrder":["Kimbap"]
     },
     {

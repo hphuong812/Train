@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ADN.Meta.Core;
 using Cinemachine;
 using IsoMatrix.Scripts.Train;
@@ -19,7 +20,6 @@ namespace IsoMatrix.Scripts.Rail
         private  List<TrainPath.Waypoint> generatedWaypoints = new List<TrainPath.Waypoint>();
         private List<TrainPath> _listRails = new List<TrainPath>();
         private TrainPath ChechWaypoint;
-        private TrainPath CurrentChechWaypoint;
         private int indexCheck = 1;
         private bool canRun;
         private int maxPoint = 100;
@@ -27,6 +27,7 @@ namespace IsoMatrix.Scripts.Rail
         private void Start()
         {
             EventManager.Subscribe(this);
+            pathTrain_1 = gameObject.GetComponent<TrainPath>();
             StartPoint();
             // TrainManager = train.gameObject.GetComponent<TrainManager>();
 
@@ -62,11 +63,11 @@ namespace IsoMatrix.Scripts.Rail
 
         private void StartPoint()
         {
+            indexCheck = 1;
             generatedWaypoints.Clear();
             AddWaypoint(StartRail, 0, true);
             AddWaypoint(StartRail, 1);
             ChechWaypoint = StartRail;
-            CurrentChechWaypoint = ChechWaypoint;
         }
 
         public void DragStopped()
@@ -74,6 +75,15 @@ namespace IsoMatrix.Scripts.Rail
             GetAllRail();
             TrainWayFindind();
             Invoke(nameof(Run), 0f);
+        }
+
+        public void UpdateRail()
+        {
+            StartPoint();
+            Invoke(nameof(GetAllRail), 0.1f);
+            Invoke(nameof(TrainWayFindind), 0.2f);
+            // GetAllRail();
+            // TrainWayFindind();
         }
 
         public void GetAllRail()
@@ -109,10 +119,9 @@ namespace IsoMatrix.Scripts.Rail
             }
             else
             {
-                pathTrain_1.m_Waypoints =cine;
-                train.m_Path = pathTrain_1;
+                currentCinePath.m_Waypoints =cine;
+                currentCinePath.InvalidateDistanceCache();
             }
-
         }
 
         public void Run()
@@ -207,6 +216,10 @@ namespace IsoMatrix.Scripts.Rail
             if (e.type == TrainActionEventType.Run)
             {
                 DragStopped();
+            }
+            if (e.type == TrainActionEventType.Update)
+            {
+                UpdateRail();
             }
 
             if (e.type == TrainActionEventType.Reset)
