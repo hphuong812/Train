@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Cinemachine;
 using IsoMatrix.Scripts.Utilities;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -10,7 +13,7 @@ namespace IsoMatrix.Scripts.Train
     {
         /// <summary>The path to follow</summary>
         [Tooltip("The path to follow")]
-        public TrainPathBase m_Path;
+        public TrainPath m_Path;
 
         /// <summary>This enum defines the options available for the update method.</summary>
         public enum UpdateMethod
@@ -46,6 +49,7 @@ namespace IsoMatrix.Scripts.Train
         private Vector3 _defaultPosition;
         private Quaternion _defaultRotation;
         private float _defaultMPosition;
+        public bool checkRemove = false;
 
         private void Awake()
         {
@@ -75,7 +79,67 @@ namespace IsoMatrix.Scripts.Train
             if (!Application.isPlaying)
                 SetCartPosition(m_Position);
             else if (m_UpdateMethod == UpdateMethod.LateUpdate)
+            {
                 SetCartPosition(m_Position + m_Speed * Time.deltaTime);
+            }
+
+            // if (checkRemove)
+            // {
+            //     CheckRemoveRail();
+            // }
+        }
+
+        void CheckRemoveRail()
+        {
+            // foreach (TrainPath.Waypoint wp in m_Path.m_Waypoints)
+            // {
+            //     Debug.Log(wp.position);
+            //     
+            // }
+            Vector3 pointCheck = GetClosestVector(m_Path.m_Waypoints, transform.position);
+            // Debug.Log(pointCheck);
+            int index = 0;
+            for (int i = 0; i < m_Path.m_Waypoints.Length; i++)
+            {
+                
+                TrainPath.Waypoint wp = m_Path.m_Waypoints[i];
+                if (wp.position.x == pointCheck.x && wp.position.z == pointCheck.z)
+                {
+                    if (i>0)
+                    {
+                        index = i-1;
+                        // Debug.Log(index);
+                    }
+                    
+                }
+            }
+
+            if (index>0)
+            {
+                List<TrainPath.Waypoint> waypoint = m_Path.m_Waypoints.ToList();
+                waypoint.RemoveRange(0, index);
+                m_Path.m_Waypoints = waypoint.ToArray();
+                m_Path.InvalidateDistanceCache();
+            }
+        }
+        
+        public static Vector3 GetClosestVector(TrainPath.Waypoint[] waypoints, Vector3 posTrain)
+        {
+            Vector3 closestPoint = new Vector3(waypoints[0].position.x,waypoints[0].position.y, waypoints[0].position.z);
+            float closestDistance = Vector3.Distance(closestPoint, posTrain);
+
+            foreach (TrainPath.Waypoint point in waypoints)
+            {
+                Vector3 pointV3 = new Vector3(point.position.x,point.position.y, point.position.z);
+                float distance = Vector3.Distance(pointV3, posTrain);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestPoint = pointV3;
+                }
+            }
+
+            return closestPoint;
         }
 
         void SetCartPosition(float distanceAlongPath)

@@ -298,14 +298,14 @@ public class RailGenerate
             typeFirst = CheckAroundRailBottomLeft(listRail, railCheckPos);
         }
 
-        if (typeFirst != RailType.none)
-        {
-            typeFinal += typeFirst.ToString() + "_" + TypeCheck.ToString();
-        }
-        else
-        {
+        // if (typeFirst != RailType.none)
+        // {
+        //     typeFinal += typeFirst.ToString() + "_" + TypeCheck.ToString();
+        // }
+        // else
+        // {
             typeFinal += TypeCheck.ToString();
-        }
+        // }
         return typeFinal;
     }
 

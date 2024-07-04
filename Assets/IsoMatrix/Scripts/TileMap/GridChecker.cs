@@ -128,14 +128,14 @@ namespace IsoMatrix.Scripts.TileMap
                                     if (typeChange != RailType.none && index != -1)
                                     {
                                         string typeChangeString = "rail_" + typeChange;
-                                        Destroy(listRail[index].gameObject);
+                                        // Destroy(listRail[index].gameObject);
                                         listRail.RemoveAt(index);
-                                        AddNewRail(typeChangeString, firstRailPos);
+                                        // AddNewRail(typeChangeString, firstRailPos);
                                     }
                                 }else if (cout == 0 && numRail < maxLevelRail)
                                 {
                                     string type = "rail_"+GetRailNameNear(tileManager);
-                                    AddNewRail(type, firstRailPos);
+                                    // AddNewRail(type, firstRailPos);
 
                                 }
                                 hasFirst = true;
@@ -294,15 +294,16 @@ namespace IsoMatrix.Scripts.TileMap
                         }else if (raiOption == RailOption.edge && railOptionTileCheck ==RailOption.angle)
                         {
                             nameRail =  "rail_"+railCurrentType.ToString();
+                            
                         }
 
-                        Destroy(listRail[index].gameObject);
+                        // Destroy(listRail[index].gameObject);
                         listRail.RemoveAt(index);
-                        AddNewRail(nameRail, pos);
+                        // AddNewRail(nameRail, pos);
                     }
                     else if(index == -1 && numRail < maxLevelRail)
                     {
-                        AddNewRail(nameRail, pos);
+                        // AddNewRail(nameRail, pos);
                     }
 
                 }
@@ -336,7 +337,7 @@ namespace IsoMatrix.Scripts.TileMap
                 {
                     var railDr = listRail.FindLast(i =>
                         i.gameObject.transform.localPosition == item.gameObject.transform.localPosition);
-                    Destroy(railDr.gameObject);
+                    // Destroy(railDr.gameObject);
                     listRail.Remove(railDr);
                     goto restart;
                 }
@@ -367,20 +368,25 @@ namespace IsoMatrix.Scripts.TileMap
                         }
                     }
                     var nameRail = "rail_"+railDirbefore.ToString();
-                    if (railOptionTileCheck != null && index != -1 && !listRail[index].isFix)
+                    // if (railOptionTileCheck != null && index != -1 && !listRail[index].isFix)
+                    // {
+                    //     if (raiOption == RailOption.angle && railOptionTileCheck ==RailOption.edge )
+                    //     {
+                    //         nameRail = _railGenerate.CheckAroundRail(listRail, posChange, railDirbefore);
+                    //     }
+                    //     Destroy(listRail[index].gameObject);
+                    //     listRail.RemoveAt(index);
+                    //     AddNewRail(nameRail, posChange);
+                    // }
+                    // else 
+                    if(index == -1&& numRail < maxLevelRail)
                     {
-                        if (raiOption == RailOption.angle && railOptionTileCheck ==RailOption.edge )
+                        AddNewRail(nameRail, posChange);
+                        foreach (var VARIABLE in listRail)
                         {
-                            nameRail = _railGenerate.CheckAroundRail(listRail, posChange, railDirbefore);
+                            Debug.Log(VARIABLE.railType);
                         }
-                        Destroy(listRail[index].gameObject);
-                        listRail.RemoveAt(index);
-                        AddNewRail(nameRail, posChange);
-                    }
-                    else if(index == -1&& numRail < maxLevelRail)
-                    {
-                        AddNewRail(nameRail, posChange);
-                    }
+                    }   
 
                 }
             }
