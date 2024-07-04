@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ADN.Meta.Core;
 using Cinemachine;
+using IsoMatrix.Scripts.Data;
 using IsoMatrix.Scripts.Train;
 using IsoMatrix.Scripts.Utilities;
 using UnityEngine;
@@ -149,12 +150,51 @@ namespace IsoMatrix.Scripts.Rail
                     TrainPath.Waypoint endWP = rail.m_Waypoints[1];
                     var pos3= rail.transform.localRotation * endWP.position + rail.transform.localPosition;
                     Vector3 pos4 = Vector3.zero;
+                    Vector3 pos5 = Vector3.zero;
+                    Vector2Int indexPoint = new Vector2Int(0, 1);
                     if (ChechWaypoint.transform.localPosition !=  rail.transform.localPosition)
                     {
                         if (rail.m_Waypoints.Length>2)
                         {
-                            TrainPath.Waypoint moreWP = rail.m_Waypoints[2];
-                            pos4= rail.transform.localRotation * moreWP.position + rail.transform.localPosition;
+                            
+                            RailGroupManager railGroupManager = rail.gameObject.GetComponent<RailGroupManager>();
+                            if (railGroupManager)
+                            {
+                                RailType typeTrainSave = RailType.none;
+                                foreach (var dir in railGroupManager.DirTrain)
+                                {
+                                    if (dir.Key.name == TrainManager.name )
+                                    {
+                                        typeTrainSave = dir.Value;
+                                    }
+                                }
+                                switch (typeTrainSave)
+                                {
+                                    case RailType.top_right:
+                                        indexPoint = GameConstant.TOP_RIGHT_POINT;
+                                        break;
+                                    case RailType.top_left:
+                                        indexPoint = GameConstant.TOP_LEFT_POINT;
+                                        break;
+                                    case RailType.bottom_right:
+                                        indexPoint = GameConstant.BOTTOM_RIGHT_POINT;
+                                        break;
+                                    case RailType.bottom_left:
+                                        indexPoint = GameConstant.BOTTOM_LEFT_POINT;
+                                        break;
+                                    case RailType.right:
+                                        indexPoint = GameConstant.RIGHT_POINT;
+                                        break;
+                                    case RailType.top:
+                                        indexPoint = GameConstant.TOP_POINT;
+                                        break;
+                                }
+                                TrainPath.Waypoint moreWP1 = rail.m_Waypoints[indexPoint.x];
+                                pos4= rail.transform.localRotation * moreWP1.position + rail.transform.localPosition;
+                                        
+                                TrainPath.Waypoint moreWP2 = rail.m_Waypoints[indexPoint.y];
+                                pos5= rail.transform.localRotation * moreWP2.position + rail.transform.localPosition;
+                            }
                         }
 
                         if (pos2 == pos1)
@@ -178,11 +218,21 @@ namespace IsoMatrix.Scripts.Rail
                         }
                         else if (rail.m_Waypoints.Length>2 && pos4 == pos1 && ChechWaypoint != rail)
                         {
-                            AddWaypoint(rail, 1);
+                            AddWaypoint(rail, indexPoint.y);
                             // _listRails.Add(CurrentChechWaypoint);
                             // CurrentChechWaypoint = ChechWaypoint;
                             ChechWaypoint = rail;
-                            indexCheck = 1;
+                            indexCheck = indexPoint.y;
+                            // _listRails.Remove(rail);
+                            goto restart;
+                        }
+                        else if (rail.m_Waypoints.Length>2 && pos5 == pos1 && ChechWaypoint != rail)
+                        {
+                            AddWaypoint(rail, indexPoint.x);
+                            // _listRails.Add(CurrentChechWaypoint);
+                            // CurrentChechWaypoint = ChechWaypoint;
+                            ChechWaypoint = rail;
+                            indexCheck = indexPoint.x;
                             // _listRails.Remove(rail);
                             goto restart;
                         }
@@ -224,7 +274,8 @@ namespace IsoMatrix.Scripts.Rail
 
             if (e.type == TrainActionEventType.Reset)
             {
-                RespawnTrain();
+                train.canRun = !train.canRun;
+                // RespawnTrain();
             }
         }
     }

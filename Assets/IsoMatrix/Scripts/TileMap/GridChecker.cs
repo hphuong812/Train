@@ -34,6 +34,7 @@ namespace IsoMatrix.Scripts.TileMap
         private List<TileManager> path = new List<TileManager>();
         private List<RailManager> listRail = new List<RailManager>();
         private RailGenerate _railGenerate;
+        private TrainManager trainCheck;
         private int numRail = 0;
         private bool isDestroy;
         public bool IsDestroy
@@ -89,9 +90,9 @@ namespace IsoMatrix.Scripts.TileMap
                 {
                     if (LayerMarkChecker.LayerInLayerMask(hit.transform.gameObject.layer, TrainLayerMask))
                     {
-                        TrainController train = hit.transform.gameObject.GetComponent<TrainController>();
-                        train.canRun = !train.canRun;
-                        Debug.Log(train.canRun);
+                        // TrainController train = hit.transform.gameObject.GetComponent<TrainController>();
+                        // train.canRun = !train.canRun;
+                        trainCheck = hit.transform.gameObject.GetComponent<TrainManager>();
                     }
                 }
                 if(Physics.Raycast(ray, out hit, maxDistance: 200f, TileLayerMask))
@@ -129,7 +130,7 @@ namespace IsoMatrix.Scripts.TileMap
                                     {
                                         string typeChangeString = "rail_" + typeChange;
                                         // Destroy(listRail[index].gameObject);
-                                        listRail.RemoveAt(index);
+                                        // listRail.RemoveAt(index);
                                         // AddNewRail(typeChangeString, firstRailPos);
                                     }
                                 }else if (cout == 0 && numRail < maxLevelRail)
@@ -193,6 +194,25 @@ namespace IsoMatrix.Scripts.TileMap
                 }
             };
 
+        }
+
+        public void AddTrainToRailGroup(RailType type, Vector3 pos)
+        {
+            GetFixPath();
+            foreach (var rail in listRail)
+            {
+                if(rail.gameObject.transform.localPosition == pos)
+                {
+                    RailGroupManager railGroupManager = rail.GetComponent<RailGroupManager>();
+                    if (railGroupManager)
+                    {
+                        if (trainCheck)
+                        {
+                            railGroupManager.AddTrainToRail(trainCheck,type);
+                        }
+                    }
+                }
+            }
         }
         public RailType CheckTouchGroupRail(RailType typeRail)
         {
@@ -277,36 +297,36 @@ namespace IsoMatrix.Scripts.TileMap
                             railCurrentType = listRail[j].railType;
                             index = j;
                             // Destroy(listRail[index].gameObject);
-                            // listRail.RemoveAt(index);
+                            listRail.RemoveAt(index);
                             break;
                         }
                     }
                 }
 
-                if (railDir!= RailType.none)
-                {
-                    var nameRail = "rail_"+railDir.ToString();
-                    if (railOptionTileCheck != null && index != -1 && !listRail[index].isFix)
-                    {
-                        if (raiOption == RailOption.angle && railOptionTileCheck ==RailOption.edge )
-                        {
-                            nameRail = _railGenerate.CheckAroundRail(listRail, pos, railDir);
-                        }else if (raiOption == RailOption.edge && railOptionTileCheck ==RailOption.angle)
-                        {
-                            nameRail =  "rail_"+railCurrentType.ToString();
-                            
-                        }
-
-                        // Destroy(listRail[index].gameObject);
-                        listRail.RemoveAt(index);
-                        // AddNewRail(nameRail, pos);
-                    }
-                    else if(index == -1 && numRail < maxLevelRail)
-                    {
-                        // AddNewRail(nameRail, pos);
-                    }
-
-                }
+                // if (railDir!= RailType.none)
+                // {
+                //     var nameRail = "rail_"+railDir.ToString();
+                //     if (railOptionTileCheck != null && index != -1 && !listRail[index].isFix && index<listRail.Count)
+                //     {
+                //         if (raiOption == RailOption.angle && railOptionTileCheck ==RailOption.edge )
+                //         {
+                //             nameRail = _railGenerate.CheckAroundRail(listRail, pos, railDir);
+                //         }else if (raiOption == RailOption.edge && railOptionTileCheck ==RailOption.angle)
+                //         {
+                //             nameRail =  "rail_"+railCurrentType.ToString();
+                //             
+                //         }
+                //
+                //         // Destroy(listRail[index].gameObject);
+                //         // listRail.RemoveAt(index);
+                //         // AddNewRail(nameRail, pos);
+                //     }
+                //     else if(index == -1 && numRail < maxLevelRail)
+                //     {
+                //         // AddNewRail(nameRail, pos);
+                //     }
+                //
+                // }
             }
             CheckStart();
             if (path.Count>1)
@@ -381,11 +401,8 @@ namespace IsoMatrix.Scripts.TileMap
                     // else 
                     if(index == -1&& numRail < maxLevelRail)
                     {
-                        AddNewRail(nameRail, posChange);
-                        foreach (var VARIABLE in listRail)
-                        {
-                            Debug.Log(VARIABLE.railType);
-                        }
+                        // AddNewRail(nameRail, posChange);
+                        AddTrainToRailGroup(railDirbefore, posChange);
                     }   
 
                 }

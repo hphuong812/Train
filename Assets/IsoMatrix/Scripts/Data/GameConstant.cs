@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace IsoMatrix.Scripts.Data
 {
     public class GameConstant
@@ -26,5 +28,12 @@ namespace IsoMatrix.Scripts.Data
 
         // player prefabs key
         public const string PLAYER_PREFS_FIRST_TIME_OPEN_KEY = "firstTimeOpen";
+
+        public static readonly Vector2Int TOP_LEFT_POINT = new Vector2Int(0, 1);
+        public static readonly Vector2Int BOTTOM_LEFT_POINT = new Vector2Int(2, 3);
+        public static readonly Vector2Int TOP_RIGHT_POINT = new Vector2Int(4, 5);
+        public static readonly Vector2Int BOTTOM_RIGHT_POINT = new Vector2Int(6, 7);
+        public static readonly Vector2Int RIGHT_POINT = new Vector2Int(3, 4);
+        public static readonly Vector2Int TOP_POINT = new Vector2Int(1, 2);
     }
 }
