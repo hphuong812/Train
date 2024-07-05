@@ -168,6 +168,12 @@ namespace IsoMatrix.Scripts.Rail
                                         typeTrainSave = dir.Value;
                                     }
                                 }
+
+                                if (typeTrainSave == RailType.none)
+                                {
+                                    RailManager railManager = rail.gameObject.GetComponent<RailManager>();
+                                    typeTrainSave = railManager.railType;
+                                }
                                 switch (typeTrainSave)
                                 {
                                     case RailType.top_right:
