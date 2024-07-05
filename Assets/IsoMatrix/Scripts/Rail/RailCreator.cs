@@ -103,7 +103,7 @@ namespace IsoMatrix.Scripts.Rail
         public void TrainWayFindind()
         {
             RailCheck();
-
+            // Debug.Log(generatedWaypoints.Count);
             if (generatedWaypoints.Count>2)
             {
                 canRun = true;
@@ -173,6 +173,7 @@ namespace IsoMatrix.Scripts.Rail
                                 {
                                     RailManager railManager = rail.gameObject.GetComponent<RailManager>();
                                     typeTrainSave = railManager.railType;
+                                    
                                 }
                                 switch (typeTrainSave)
                                 {
@@ -193,6 +194,7 @@ namespace IsoMatrix.Scripts.Rail
                                         break;
                                     case RailType.top:
                                         indexPoint = GameConstant.TOP_POINT;
+                                        Debug.Log(indexPoint);
                                         break;
                                 }
                                 TrainPath.Waypoint moreWP1 = rail.m_Waypoints[indexPoint.x];

@@ -10,16 +10,16 @@ public class RailGroupManager : MonoBehaviour
 
     public void AddTrainToRail(TrainManager train, RailType rail)
     {
-        
-        
         foreach (var dir in DirTrain)
         {
             if (dir.Key.name == train.name)
             {
+                Debug.Log(dir.Key+"||"+ rail);
                 ChangeValueTrain(dir.Key, rail);
                 return;
             }
         }
+        Debug.Log(train+"||"+ rail);
         DirTrain.Add(train, rail);
     }
 

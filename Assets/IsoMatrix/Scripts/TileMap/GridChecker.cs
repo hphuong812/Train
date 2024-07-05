@@ -91,6 +91,7 @@ namespace IsoMatrix.Scripts.TileMap
                     if (LayerMarkChecker.LayerInLayerMask(hit.transform.gameObject.layer, TrainLayerMask))
                     {
                         trainCheck = hit.transform.gameObject.GetComponent<TrainManager>();
+                        // Debug.Log(trainCheck.name);
                     }
                 }
                 if(Physics.Raycast(ray, out hit, maxDistance: 200f, TileLayerMask))
