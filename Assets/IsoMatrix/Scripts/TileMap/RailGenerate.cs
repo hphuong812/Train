@@ -20,8 +20,8 @@ public enum RailType
     right_top_left,
     right_top_right,
     right_bottom_left,
-    right_bottom_right
-
+    right_bottom_right,
+    all
 }
 public class RailGenerate
 {

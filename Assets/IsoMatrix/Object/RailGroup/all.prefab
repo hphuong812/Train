@@ -47,9 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 950b9f013f5154c66a448207e521a7e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  railType: 7
-  railOption: 1
-  isFix: 0
+  railType: 15
+  railOption: 0
+  isFix: 1
   Replaced:
     m_PersistentCalls:
       m_Calls:

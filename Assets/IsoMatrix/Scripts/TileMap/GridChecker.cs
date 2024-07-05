@@ -90,97 +90,52 @@ namespace IsoMatrix.Scripts.TileMap
                 {
                     if (LayerMarkChecker.LayerInLayerMask(hit.transform.gameObject.layer, TrainLayerMask))
                     {
-                        // TrainController train = hit.transform.gameObject.GetComponent<TrainController>();
-                        // train.canRun = !train.canRun;
                         trainCheck = hit.transform.gameObject.GetComponent<TrainManager>();
                     }
                 }
                 if(Physics.Raycast(ray, out hit, maxDistance: 200f, TileLayerMask))
                 {
-                    if (LayerMarkChecker.LayerInLayerMask(hit.transform.gameObject.layer, TileLayerMask))
-                    {
-                        TileManager tileManager = hit.transform.gameObject.GetComponent<TileManager>();
-                        if (!isDestroy)
-                        {
-                            if (!hasFirst && !tileManager.isBlock)
-                            {
-                                var index = -1;
-                                firstTileManager = tileManager;
-                                firstTileManager.previous = tileManager.previous;
-                                Vector3 firstRailPos = new Vector3(firstTileManager.GridLocation.x, 1,
-                                    firstTileManager.GridLocation.y);
-                                var cout = 0;
-                                RailType typeTapRail = RailType.none;
-                                RailType typeChange = RailType.none;
-                                for (int i = 0; i < listRail.Count; i++)
-                                {
-                                    if (listRail[i].gameObject.transform.localPosition == new Vector3(tileManager.GridLocation.x,1,tileManager.GridLocation.y))
-                                    {
-                                        typeTapRail = listRail[i].railType;
-                                        index = i;
-                                        cout++;
-                                        break;
-                                    }
-                                }
-
-                                if (cout>0 && !listRail[index].isFix)
-                                {
-                                    typeChange = CheckTouchGroupRail(typeTapRail);
-                                    if (typeChange != RailType.none && index != -1)
-                                    {
-                                        string typeChangeString = "rail_" + typeChange;
-                                        // Destroy(listRail[index].gameObject);
-                                        // listRail.RemoveAt(index);
-                                        // AddNewRail(typeChangeString, firstRailPos);
-                                    }
-                                }else if (cout == 0 && numRail < maxLevelRail)
-                                {
-                                    string type = "rail_"+GetRailNameNear(tileManager);
-                                    // AddNewRail(type, firstRailPos);
-
-                                }
-                                hasFirst = true;
-                            }
-                            else
-                            {
-                                if (path.Count ==0)
-                                {
-                                    path = _pathFinder.FindPath(firstTileManager, tileManager);
-                                }
-                            }
-                            map = MapManager.Instance.map;
-                            tileManager.ChangeSprite(TileSpriteName.tex_tile_select);
-                        }
-                        else
-                        {
-                            for (int i = 0; i < listRail.Count; i++)
-                            {
-                                if (listRail[i].gameObject.transform.localPosition == new Vector3(tileManager.GridLocation.x,1,tileManager.GridLocation.y) && !listRail[i].isFix)
-                                {
-                                    listRail[i].BeforeDestroy();
-                                    listRail.RemoveAt(i);
-                                    return;
-                                }
-                            }
-                            tileManager.ChangeSprite(TileSpriteName.tex_tile_destroy);
-                        }
-                        foreach (KeyValuePair<Vector2, TileManager> tileManagerInMap in map)
-                        {
-                            if (tileManagerInMap.Key != tileManager.GridLocation)
-                            {
-                                tileManagerInMap.Value.OnUnSelect();
-                            }
-                        }
-                        tileManager.OnSelect();
-                    }
-                    if (path.Count>0)
-                    {
-                        ChangePathType();
-                    }
+                    HandleTileInteraction(hit);
                 }
             }
         }
 
+        public void HandleTileInteraction(RaycastHit hit)
+        {
+            if (LayerMarkChecker.LayerInLayerMask(hit.transform.gameObject.layer, TileLayerMask))
+            {
+                TileManager tileManager = hit.transform.gameObject.GetComponent<TileManager>();
+
+                if (!hasFirst && !tileManager.isBlock)
+                {
+                    firstTileManager = tileManager;
+                    firstTileManager.previous = tileManager.previous;
+                    hasFirst = true;
+                }
+                else
+                {
+                    if (path.Count ==0)
+                    {
+                        path = _pathFinder.FindPath(firstTileManager, tileManager);
+                    }
+                }
+                map = MapManager.Instance.map;
+                tileManager.ChangeSprite(TileSpriteName.tex_tile_select);
+                
+                foreach (KeyValuePair<Vector2, TileManager> tileManagerInMap in map)
+                {
+                    if (tileManagerInMap.Key != tileManager.GridLocation)
+                    {
+                        tileManagerInMap.Value.OnUnSelect();
+                    }
+                }
+                tileManager.OnSelect();
+            }
+            if (path.Count>0)
+            {
+                ChangePathType();
+            }
+        }
         public void AddNewRail(string type, Vector3 pos)
         {
             Addressables.LoadAssetAsync<GameObject>(type).Completed += handle =>
@@ -277,15 +232,6 @@ namespace IsoMatrix.Scripts.TileMap
         {
             for (int i = 0; i < path.Count; i++)
             {
-
-                var previousTile = i > 0 ? path[i - 1] : firstTileManager;
-                var futureTile = i < path.Count - 1 ? path[i + 1] : null;
-                var railDir = _railGenerate.RailDirection(previousTile, path[i], futureTile);
-                var raiOption = _railGenerate.GetOption(railDir);
-                RailOption? railOptionTileCheck = null;
-                RailType railCurrentType = RailType.none;
-                var cout = 0;
-                var pos = new Vector3(path[i].GridLocation.x, 1, path[i].GridLocation.y);
                 var index = -1;
                 if (listRail.Count>0)
                 {
@@ -293,40 +239,12 @@ namespace IsoMatrix.Scripts.TileMap
                     {
                         if (listRail[j].gameObject.transform.localPosition == new Vector3(path[i].GridLocation.x, 1, path[i].GridLocation.y))
                         {
-                            railOptionTileCheck = listRail[j].railOption;
-                            railCurrentType = listRail[j].railType;
                             index = j;
-                            // Destroy(listRail[index].gameObject);
                             listRail.RemoveAt(index);
                             break;
                         }
                     }
                 }
-
-                // if (railDir!= RailType.none)
-                // {
-                //     var nameRail = "rail_"+railDir.ToString();
-                //     if (railOptionTileCheck != null && index != -1 && !listRail[index].isFix && index<listRail.Count)
-                //     {
-                //         if (raiOption == RailOption.angle && railOptionTileCheck ==RailOption.edge )
-                //         {
-                //             nameRail = _railGenerate.CheckAroundRail(listRail, pos, railDir);
-                //         }else if (raiOption == RailOption.edge && railOptionTileCheck ==RailOption.angle)
-                //         {
-                //             nameRail =  "rail_"+railCurrentType.ToString();
-                //             
-                //         }
-                //
-                //         // Destroy(listRail[index].gameObject);
-                //         // listRail.RemoveAt(index);
-                //         // AddNewRail(nameRail, pos);
-                //     }
-                //     else if(index == -1 && numRail < maxLevelRail)
-                //     {
-                //         // AddNewRail(nameRail, pos);
-                //     }
-                //
-                // }
             }
             CheckStart();
             if (path.Count>1)
@@ -357,7 +275,6 @@ namespace IsoMatrix.Scripts.TileMap
                 {
                     var railDr = listRail.FindLast(i =>
                         i.gameObject.transform.localPosition == item.gameObject.transform.localPosition);
-                    // Destroy(railDr.gameObject);
                     listRail.Remove(railDr);
                     goto restart;
                 }
@@ -371,40 +288,10 @@ namespace IsoMatrix.Scripts.TileMap
                 var futureTileBeforeStart = path.Count>0 ? path[0] : null;
                 var beforeTile = beforeFirstTileManager ? beforeFirstTileManager : firstTileManager.previous;
                 var railDirbefore = _railGenerate.RailDirection(beforeTile, firstTileManager, futureTileBeforeStart);
-                var raiOption = _railGenerate.GetOption(railDirbefore);
-                RailOption? railOptionTileCheck = null;
-                RailType railCurrentType = RailType.none;
                 var posChange = new Vector3(firstTileManager.GridLocation.x, 1,firstTileManager.GridLocation.y );
                 if (railDirbefore != RailType.none)
                 {
-                    var index = -1;
-                    for (int i = 0; i < listRail.Count; i++)
-                    {
-                        if (listRail[i].gameObject.transform.localPosition == new Vector3(firstTileManager.GridLocation.x, 1, firstTileManager.GridLocation.y))
-                        {
-                            railOptionTileCheck = listRail[i].railOption;
-                            index = i;
-                            break;
-                        }
-                    }
-                    var nameRail = "rail_"+railDirbefore.ToString();
-                    // if (railOptionTileCheck != null && index != -1 && !listRail[index].isFix)
-                    // {
-                    //     if (raiOption == RailOption.angle && railOptionTileCheck ==RailOption.edge )
-                    //     {
-                    //         nameRail = _railGenerate.CheckAroundRail(listRail, posChange, railDirbefore);
-                    //     }
-                    //     Destroy(listRail[index].gameObject);
-                    //     listRail.RemoveAt(index);
-                    //     AddNewRail(nameRail, posChange);
-                    // }
-                    // else 
-                    if(index == -1&& numRail < maxLevelRail)
-                    {
-                        // AddNewRail(nameRail, posChange);
-                        AddTrainToRailGroup(railDirbefore, posChange);
-                    }   
-
+                    AddTrainToRailGroup(railDirbefore, posChange);
                 }
             }
         }
@@ -413,6 +300,7 @@ namespace IsoMatrix.Scripts.TileMap
         {
             if (ctx.phase == InputActionPhase.Canceled)
             {
+                trainCheck = null;
                 hasFirst = false;
                 beforeFirstTileManager = null;
                 firstTileManager = null;
