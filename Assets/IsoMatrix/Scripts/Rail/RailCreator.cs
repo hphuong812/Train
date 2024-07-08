@@ -103,7 +103,6 @@ namespace IsoMatrix.Scripts.Rail
         public void TrainWayFindind()
         {
             RailCheck();
-            // Debug.Log(generatedWaypoints.Count);
             if (generatedWaypoints.Count>2)
             {
                 canRun = true;
@@ -137,7 +136,6 @@ namespace IsoMatrix.Scripts.Rail
 
         public void RailCheck()
         {
-            restart:
             if ( generatedWaypoints.Count < maxPoint)
             {
                 foreach (var rail in _listRails)
@@ -149,9 +147,7 @@ namespace IsoMatrix.Scripts.Rail
                     var pos2= rail.transform.localRotation * startWP.position + rail.transform.localPosition;
                     TrainPath.Waypoint endWP = rail.m_Waypoints[1];
                     var pos3= rail.transform.localRotation * endWP.position + rail.transform.localPosition;
-                    Vector3 pos4 = Vector3.zero;
-                    Vector3 pos5 = Vector3.zero;
-                    Vector2Int indexPoint = new Vector2Int(0, 1);
+                    
                     if (ChechWaypoint.transform.localPosition !=  rail.transform.localPosition)
                     {
                         if (rail.m_Waypoints.Length>2)
@@ -175,74 +171,55 @@ namespace IsoMatrix.Scripts.Rail
                                     typeTrainSave = railManager.railType;
                                     
                                 }
-                                switch (typeTrainSave)
+                                Dictionary<RailType, Vector2Int> indexPointMap = new Dictionary<RailType, Vector2Int>
                                 {
-                                    case RailType.top_right:
-                                        indexPoint = GameConstant.TOP_RIGHT_POINT;
-                                        break;
-                                    case RailType.top_left:
-                                        indexPoint = GameConstant.TOP_LEFT_POINT;
-                                        break;
-                                    case RailType.bottom_right:
-                                        indexPoint = GameConstant.BOTTOM_RIGHT_POINT;
-                                        break;
-                                    case RailType.bottom_left:
-                                        indexPoint = GameConstant.BOTTOM_LEFT_POINT;
-                                        break;
-                                    case RailType.right:
-                                        indexPoint = GameConstant.RIGHT_POINT;
-                                        break;
-                                    case RailType.top:
-                                        indexPoint = GameConstant.TOP_POINT;
-                                        Debug.Log(indexPoint);
-                                        break;
+                                    { RailType.top_right, GameConstant.TOP_RIGHT_POINT },
+                                    { RailType.top_left, GameConstant.TOP_LEFT_POINT },
+                                    { RailType.bottom_right, GameConstant.BOTTOM_RIGHT_POINT },
+                                    { RailType.bottom_left, GameConstant.BOTTOM_LEFT_POINT },
+                                    { RailType.right, GameConstant.RIGHT_POINT },
+                                    { RailType.top, GameConstant.TOP_POINT }
+                                };
+                                if (indexPointMap.TryGetValue(typeTrainSave, out Vector2Int indexPoint))
+                                {
+                                    TrainPath.Waypoint moreWP1 = rail.m_Waypoints[indexPoint.x];
+                                    Vector3 pos4= moreWP1.position + rail.transform.localPosition;
+                                    
+                                    TrainPath.Waypoint moreWP2 = rail.m_Waypoints[indexPoint.y];
+                                    Vector3 pos5= moreWP2.position + rail.transform.localPosition;
+                                    if (pos4 == pos1)
+                                    {
+                                        AddWaypoint(rail, indexPoint.y);
+                                        ChechWaypoint = rail;
+                                        indexCheck = indexPoint.y;
+                                        RailCheck();
+                                        return;
+                                    }else if (pos5 == pos1)
+                                    {
+                                        AddWaypoint(rail, indexPoint.x);
+                                        ChechWaypoint = rail;
+                                        indexCheck = indexPoint.x;
+                                        RailCheck();
+                                        return;
+                                    }
                                 }
-                                TrainPath.Waypoint moreWP1 = rail.m_Waypoints[indexPoint.x];
-                                pos4= rail.transform.localRotation * moreWP1.position + rail.transform.localPosition;
-                                        
-                                TrainPath.Waypoint moreWP2 = rail.m_Waypoints[indexPoint.y];
-                                pos5= rail.transform.localRotation * moreWP2.position + rail.transform.localPosition;
                             }
                         }
 
                         if (pos2 == pos1)
                         {
                             AddWaypoint(rail, 1);
-                            // _listRails.Add(CurrentChechWaypoint);
-                            // CurrentChechWaypoint = ChechWaypoint;
                             ChechWaypoint = rail;
                             indexCheck = 1;
-                            // _listRails.Remove(rail);
-                            goto restart;
+                            RailCheck();
+                            return;
                         }else if (pos3 == pos1)
                         {
                             AddWaypoint(rail, 0);
-                            // _listRails.Add(CurrentChechWaypoint);
-                            // CurrentChechWaypoint = ChechWaypoint;
                             ChechWaypoint = rail;
                             indexCheck = 0;
-                            // _listRails.Remove(rail);
-                            goto restart;
-                        }
-                        else if (rail.m_Waypoints.Length>2 && pos4 == pos1 && ChechWaypoint != rail)
-                        {
-                            AddWaypoint(rail, indexPoint.y);
-                            // _listRails.Add(CurrentChechWaypoint);
-                            // CurrentChechWaypoint = ChechWaypoint;
-                            ChechWaypoint = rail;
-                            indexCheck = indexPoint.y;
-                            // _listRails.Remove(rail);
-                            goto restart;
-                        }
-                        else if (rail.m_Waypoints.Length>2 && pos5 == pos1 && ChechWaypoint != rail)
-                        {
-                            AddWaypoint(rail, indexPoint.x);
-                            // _listRails.Add(CurrentChechWaypoint);
-                            // CurrentChechWaypoint = ChechWaypoint;
-                            ChechWaypoint = rail;
-                            indexCheck = indexPoint.x;
-                            // _listRails.Remove(rail);
-                            goto restart;
+                            RailCheck();
+                            return;
                         }
                     }
                 }

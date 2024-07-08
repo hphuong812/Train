@@ -17,13 +17,14 @@ namespace IsoMatrix.Scripts.Level
         private GridChecker gridChecker;
 
         [SerializeField] private Camera isoMatrixCamera;
-        public List<GameObject>  ListTrain { get; protected set; }
+        public List<TrainController>  ListTrain { get; protected set; }
         public bool CanReset
         {
             get => canReset;
             set => canReset = value;
         }
-        [FormerlySerializedAs("SpawnCardMissionManager")] public SpawnCardOrderManager spawnCardOrderManager;
+        public SpawnCardOrderManager spawnCardOrderManager;
+        public SpawnTrainControlManager trainControlManager;
 
         private GameObject pathContainerGO;
         private Transform exitPosition;
@@ -34,13 +35,14 @@ namespace IsoMatrix.Scripts.Level
 
         private LevelItemData levelItemData;
         private CardOrderManager _cardOrderManager;
+        private TrainControlManager _trainControlManager;
 
         private bool canReset = true;
         private bool isWon;
         public bool IsWon => isWon;
         private float _timeStart;
-        private List<RailCreator> listRailCreator = new List<RailCreator>();
         private List<CardOrderManager> listCardOrder= new List<CardOrderManager>();
+        private List<TrainControlManager> listTrainControlUI= new List<TrainControlManager>();
 
         private void OnEnable()
         {
@@ -58,16 +60,12 @@ namespace IsoMatrix.Scripts.Level
         //     RespawnPlayer();
         // }
 
-        public void AddListTrain(List<GameObject> listItem)
-        {
-            ListTrain = new List<GameObject> (listItem);
-        }
-
         public void AddItemData(LevelItemData levelItemData)
         {
             this.levelItemData = levelItemData;
             gridChecker.AddMaxRail(this.levelItemData.MaxRail);
             SpawnCardOrder();
+            SpawnTrainControlUI();
         }
 
         private void SpawnCardOrder()
@@ -81,12 +79,31 @@ namespace IsoMatrix.Scripts.Level
                 listCardOrder.Add(_cardOrderManager);
             }
         }
+        
+        private void SpawnTrainControlUI()
+        {
+            RemoveTrainControl();
+            listTrainControlUI.Clear();
+            for (int i = 0; i < ListTrain.Count; i++)
+            {
+                _trainControlManager = trainControlManager.SpawnTrainControl();
+                _trainControlManager.SetUpTrainControl(ListTrain[i], i+1);
+                listTrainControlUI.Add(_trainControlManager);
+            }
+        }
 
         public void RemoveCard()
         {
             foreach (var card in listCardOrder)
             {
                 Destroy(card.gameObject);
+            }
+        }
+        public void RemoveTrainControl()
+        {
+            foreach (var train in listTrainControlUI)
+            {
+                Destroy(train.gameObject);
             }
         }
 
@@ -168,9 +185,9 @@ namespace IsoMatrix.Scripts.Level
             // }
         }
 
-        public void AddListRailCreator(List<RailCreator> levelControllerListTrain)
+        public void AddListTrain(List<TrainController> trainControllers)
         {
-            listRailCreator = levelControllerListTrain;
+            ListTrain = new List<TrainController> (trainControllers);
         }
 
         public void OnLevelDestroyed()

@@ -84,8 +84,7 @@ namespace IsoMatrix.Scripts.Level
             levelGO = Instantiate(levelPrefab, Vector3.zero, Quaternion.identity);
             levelController = levelGO.GetComponent<LevelController>();
             levelController.locomotiveManager.ListTrainConrect = levelItemData.TrainOrder;
-            levelManager.AddListTrain(levelController.listItem);
-            levelManager.AddListRailCreator(levelController.listRail);
+            levelManager.AddListTrain(levelController.listTrain);
             levelManager.GetPathContainer(levelController.PathContainer);
             levelManager.AddItemData(levelItemData);
             levelManager.UpdateCameraSize(levelController.CammeraSize, levelController.CameraPos);
@@ -113,7 +112,7 @@ namespace IsoMatrix.Scripts.Level
         }
         public void OnReloadCurLevel()
         {
-            levelManager.AddListTrain(levelController.listItem);
+            levelManager.AddListTrain(levelController.listTrain);
             levelManager.CanReset = true;
             ReloadLevel();
             // if (levelManager.Players)

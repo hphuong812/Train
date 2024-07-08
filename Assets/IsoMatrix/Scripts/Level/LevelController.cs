@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using ADN.Meta.Core;
 using IsoMatrix.Scripts.Rail;
+using IsoMatrix.Scripts.Train;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -14,7 +15,7 @@ namespace IsoMatrix.Scripts.Level
         public Vector3 CameraPos = new Vector3(-0.8f, 7.8f, -2.1f);
         public LocomotiveManager locomotiveManager;
         public List<GameObject> listItem;
-        public List<RailCreator> listRail;
+        public List<TrainController> listTrain;
         public GameObject PathContainer;
         public event Action DataLoaded;
         public event Action LevelDestroyed;

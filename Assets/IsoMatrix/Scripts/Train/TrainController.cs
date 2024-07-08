@@ -49,7 +49,7 @@ namespace IsoMatrix.Scripts.Train
         private Vector3 _defaultPosition;
         private Quaternion _defaultRotation;
         private float _defaultMPosition;
-        public bool checkRemove = false;
+        public GameObject arrow;
 
         private void Awake()
         {
@@ -81,12 +81,25 @@ namespace IsoMatrix.Scripts.Train
             else if (m_UpdateMethod == UpdateMethod.LateUpdate)
             {
                 SetCartPosition(m_Position + m_Speed * Time.deltaTime);
+                SetArrPosition(m_Position + 1 + m_Speed * Time.deltaTime);
             }
 
             // if (checkRemove)
             // {
             //     CheckRemoveRail();
             // }
+        }
+
+        private void SetArrPosition(float distanceAlongPath)
+        {
+            if (m_Path != null)
+            {
+                // Debug.Log(distanceAlongPath);
+                m_Position = m_Path.StandardizeUnit(distanceAlongPath, m_PositionUnits);
+               
+                // Debug.Log(m_Path.EvaluatePosition(m_Position));
+                arrow.transform.localRotation = m_Path.EvaluateOrientationAtUnit(m_Position, m_PositionUnits);
+            }
         }
 
         void CheckRemoveRail()
