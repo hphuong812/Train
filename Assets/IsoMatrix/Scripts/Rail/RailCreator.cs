@@ -81,10 +81,9 @@ namespace IsoMatrix.Scripts.Rail
         public void UpdateRail()
         {
             StartPoint();
-            Invoke(nameof(GetAllRail), 0.1f);
-            Invoke(nameof(TrainWayFindind), 0.2f);
-            // GetAllRail();
-            // TrainWayFindind();
+            GetAllRail();
+            TrainWayFindind();
+            train.UpdateStateArrowIndicator();
         }
 
         public void GetAllRail()
@@ -259,8 +258,8 @@ namespace IsoMatrix.Scripts.Rail
 
             if (e.type == TrainActionEventType.Reset)
             {
-                train.canRun = !train.canRun;
-                // RespawnTrain();
+                // train.canRun = !train.canRun;
+                RespawnTrain();
             }
         }
     }

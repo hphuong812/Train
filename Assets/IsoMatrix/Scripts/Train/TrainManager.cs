@@ -5,14 +5,14 @@ using UnityEngine.Events;
 
 public enum TrainName
 {
-    Kimbap,
-    Tokbokki,
-    Banhtet,
-    Banhmi
+    Num1,
+    Num2,
+    Num3,
+    Num4
 }
 public class TrainManager : MonoBehaviour
 {
-    public TrainName TrainName = TrainName.Kimbap;
+    public TrainName TrainName = TrainName.Num1;
     public Transform DefaultParent;
     public UnityEvent OnRun;
 

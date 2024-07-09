@@ -49,7 +49,7 @@ namespace IsoMatrix.Scripts.Train
         private Vector3 _defaultPosition;
         private Quaternion _defaultRotation;
         private float _defaultMPosition;
-        public GameObject arrow;
+        public List<ArrowIndicatorController> listArrowIndicator;
 
         private void Awake()
         {
@@ -57,6 +57,12 @@ namespace IsoMatrix.Scripts.Train
             _defaultRotation = transform.rotation;
             _defaultMPosition = m_Position;
         }
+
+        private void Start()
+        {
+            UpdateStateArrowIndicator();
+        }
+        
 
         void FixedUpdate()
         {
@@ -70,7 +76,10 @@ namespace IsoMatrix.Scripts.Train
             {
                 float speed = Application.isPlaying ? m_Speed : 0;
                 if (m_UpdateMethod == UpdateMethod.Update)
+                {
                     SetCartPosition(m_Position + speed * Time.deltaTime);
+                    SetArrPosition(m_Position + 0.5f + speed * Time.deltaTime);
+                }
             }
         }
 
@@ -81,24 +90,28 @@ namespace IsoMatrix.Scripts.Train
             else if (m_UpdateMethod == UpdateMethod.LateUpdate)
             {
                 SetCartPosition(m_Position + m_Speed * Time.deltaTime);
-                SetArrPosition(m_Position + 1 + m_Speed * Time.deltaTime);
             }
+        }
 
-            // if (checkRemove)
-            // {
-            //     CheckRemoveRail();
-            // }
+        public void UpdateStateArrowIndicator()
+        {
+            if (listArrowIndicator.Count>0)
+            {
+                SetArrPosition(m_Position+ 0.5f);
+            }
         }
 
         private void SetArrPosition(float distanceAlongPath)
         {
-            if (m_Path != null)
+            if (m_Path != null && listArrowIndicator.Count>0)
             {
-                // Debug.Log(distanceAlongPath);
-                m_Position = m_Path.StandardizeUnit(distanceAlongPath, m_PositionUnits);
-               
-                // Debug.Log(m_Path.EvaluatePosition(m_Position));
-                arrow.transform.localRotation = m_Path.EvaluateOrientationAtUnit(m_Position, m_PositionUnits);
+                for (int i = 0; i < listArrowIndicator.Count; i++)
+                {
+                    float position = m_Path.StandardizeUnit(distanceAlongPath + i*0.5f, m_PositionUnits);
+                    listArrowIndicator[i].transform.position = m_Path.EvaluatePositionAtUnit(position, m_PositionUnits);
+                    listArrowIndicator[i].transform.rotation = m_Path.EvaluateOrientationAtUnit(position, m_PositionUnits);
+                    listArrowIndicator[i].PlayAnimation( i*0.2f);
+                }
             }
         }
 
@@ -159,7 +172,6 @@ namespace IsoMatrix.Scripts.Train
         {
             if (m_Path != null)
             {
-                // Debug.Log(distanceAlongPath);
                 m_Position = m_Path.StandardizeUnit(distanceAlongPath, m_PositionUnits);
                 transform.position = m_Path.EvaluatePositionAtUnit(m_Position, m_PositionUnits);
                 // Debug.Log(m_Path.EvaluatePosition(m_Position));
