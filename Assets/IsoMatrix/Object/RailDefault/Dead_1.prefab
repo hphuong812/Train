@@ -82,7 +82,7 @@ MonoBehaviour:
     tangent: {x: 0, y: 0, z: -0.3}
     roll: 0
   - position: {x: 0, y: -0.3, z: 0}
-    tangent: {x: 0, y: -0.3, z: 0}
+    tangent: {x: 0, y: -0.3, z: -0.1}
     roll: 0
 --- !u!114 &-4829260998335236212
 MonoBehaviour:
@@ -100,7 +100,7 @@ MonoBehaviour:
   drawingMode: 1
   outlineLayer: 0
   outlineTargets:
-  - IsVisible: 1
+  - IsVisible: 0
     CutoutMask: 8
     edgeDilateAmount: 5
     frontEdgeDilateAmount: 5
