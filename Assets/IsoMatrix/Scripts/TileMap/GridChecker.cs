@@ -75,6 +75,24 @@ namespace IsoMatrix.Scripts.TileMap
             isWon = false;
         }
 
+        public void Taped(InputAction.CallbackContext ctx)
+        {
+            if (ctx.phase == InputActionPhase.Canceled)
+            {
+                var touchPosition = ctx.ReadValue<Vector2>();
+                Ray ray = Camera.main.ScreenPointToRay(touchPosition);
+
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, maxDistance: 200f))
+                {
+                    if (LayerMarkChecker.LayerInLayerMask(hit.transform.gameObject.layer, TrainLayerMask))
+                    {
+                           TrainController trainController= hit.transform.gameObject.GetComponent<TrainController>();
+                           trainController.canRun = !trainController.canRun;
+                    }
+                }
+            }
+        }
 
         public void DragStarted(InputAction.CallbackContext ctx)
         {
@@ -90,7 +108,10 @@ namespace IsoMatrix.Scripts.TileMap
                 {
                     if (LayerMarkChecker.LayerInLayerMask(hit.transform.gameObject.layer, TrainLayerMask))
                     {
-                        trainCheck = hit.transform.gameObject.GetComponent<TrainManager>();
+                        if (!trainCheck)
+                        {
+                            trainCheck = hit.transform.gameObject.GetComponent<TrainManager>();
+                        }
                         // Debug.Log(trainCheck.name);
                     }
                 }
@@ -301,6 +322,11 @@ namespace IsoMatrix.Scripts.TileMap
         {
             if (ctx.phase == InputActionPhase.Canceled)
             {
+                if (trainCheck)
+                {
+                    TrainController trainController = trainCheck.gameObject.GetComponent<TrainController>();
+                    trainController.canRun = !trainController.canRun;
+                }
                 trainCheck = null;
                 hasFirst = false;
                 beforeFirstTileManager = null;

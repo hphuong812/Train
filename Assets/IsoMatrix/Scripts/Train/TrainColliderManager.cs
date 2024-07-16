@@ -9,10 +9,12 @@ namespace IsoMatrix.Scripts.Train
     {
         [SerializeField]
         private LayerMask trainLayerMask;
+        [SerializeField] private LayerMask locomotiveLayerMask;
+        [SerializeField] private LayerMask deadZoneLayerMask;
+        [SerializeField] private LayerMask speedUpZoneLayerMask;
 
         [SerializeField] private TrainController _trainController;
         [SerializeField] private TrainManager _trainManager;
-        [SerializeField] private LayerMask locomotiveLayerMask;
 
         private bool locomotiveMatched;
         public bool LocomotiveMatched => locomotiveMatched;
@@ -58,6 +60,12 @@ namespace IsoMatrix.Scripts.Train
                 LocomotiveManager locomotiveManager = other.gameObject.GetComponent<LocomotiveManager>();
                 if (locomotiveManager)
                 {
+                    if (_trainManager.TrainName == TrainName.TNT)
+                    {
+                        _trainController.canRun = false;
+                        TrainMatch?.Invoke();
+                        return;
+                    }
                     if (_trainController)
                     {
                         _trainController.canRun = false;
@@ -68,6 +76,26 @@ namespace IsoMatrix.Scripts.Train
                     locomotiveManager.OnTrainCollider(gameObject);
                 }
             }
+            
+            if (LayerMarkChecker.LayerInLayerMask(other.gameObject.layer, deadZoneLayerMask))
+            {
+                if (_trainManager.TrainName == TrainName.TNT)
+                {
+                    return;
+                }
+
+                ResetTrain();
+            }
+            
+            if (LayerMarkChecker.LayerInLayerMask(other.gameObject.layer, speedUpZoneLayerMask))
+            {
+                _trainController.m_Speed = 4;
+            }
+        }
+
+        public void ResetTrain()
+        {
+            TrainActionEvent.Trigger(TrainActionEventType.Reset);
         }
 
         public void OnEventTriggered(TrainActionEvent e)

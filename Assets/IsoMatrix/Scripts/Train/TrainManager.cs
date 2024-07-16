@@ -8,7 +8,8 @@ public enum TrainName
     Num1,
     Num2,
     Num3,
-    Num4
+    Num4,
+    TNT
 }
 public class TrainManager : MonoBehaviour
 {

@@ -25,12 +25,12 @@
                 },
                 {
                     "name": "Tap",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "b57f9bf6-2df9-49ff-b607-7071380c0c09",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "Tap",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [

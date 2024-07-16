@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -3657282095495825993}
   - component: {fileID: 7365592932786874709}
   - component: {fileID: 7583522231671815297}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: bottom_left_up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ MonoBehaviour:
   drawingMode: 1
   outlineLayer: 0
   outlineTargets:
-  - IsVisible: 0
+  - IsVisible: 1
     CutoutMask: 8
     edgeDilateAmount: 5
     frontEdgeDilateAmount: 5
@@ -114,7 +114,7 @@ MonoBehaviour:
     cutoutTextureName: 
     DilateRenderingMode: 0
     cutoutTextureIndex: 0
-  - IsVisible: 0
+  - IsVisible: 1
     CutoutMask: 8
     edgeDilateAmount: 5
     frontEdgeDilateAmount: 5

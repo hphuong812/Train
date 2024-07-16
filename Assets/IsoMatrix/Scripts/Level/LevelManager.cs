@@ -32,6 +32,7 @@ namespace IsoMatrix.Scripts.Level
         public UnityEvent GameWon;
         public UnityEvent GameLosed;
         public UnityEvent LocomotiveRun;
+        public UnityEvent GameReseted;
 
         private LevelItemData levelItemData;
         private CardOrderManager _cardOrderManager;
@@ -64,7 +65,7 @@ namespace IsoMatrix.Scripts.Level
         {
             this.levelItemData = levelItemData;
             gridChecker.AddMaxRail(this.levelItemData.MaxRail);
-            SpawnCardOrder();
+            // SpawnCardOrder();
             SpawnTrainControlUI();
         }
 
@@ -206,6 +207,10 @@ namespace IsoMatrix.Scripts.Level
             if (e.type == TrainActionEventType.LocomotiveRun)
             {
                 LocomotiveRun?.Invoke();
+            }
+            if (e.type == TrainActionEventType.Reset)
+            {
+                GameReseted?.Invoke();
             }
         }
     }

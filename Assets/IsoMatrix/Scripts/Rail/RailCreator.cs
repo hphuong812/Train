@@ -19,16 +19,20 @@ namespace IsoMatrix.Scripts.Rail
         public TrainController train;
         public TrainManager TrainManager;
         private  List<TrainPath.Waypoint> generatedWaypoints = new List<TrainPath.Waypoint>();
+        private TrainPath.Waypoint[] _defaultWaypoint = new TrainPath.Waypoint[]{};
         private List<TrainPath> _listRails = new List<TrainPath>();
         private TrainPath ChechWaypoint;
+        private float _defaultSpeed;
         private int indexCheck = 1;
         private bool canRun;
-        private int maxPoint = 100;
+        private int maxPoint = 50;
 
         private void Start()
         {
             EventManager.Subscribe(this);
             pathTrain_1 = gameObject.GetComponent<TrainPath>();
+            _defaultWaypoint = pathTrain_1.m_Waypoints;
+            _defaultSpeed = train.m_Speed;
             StartPoint();
             // TrainManager = train.gameObject.GetComponent<TrainManager>();
 
@@ -56,10 +60,12 @@ namespace IsoMatrix.Scripts.Rail
                 TrainManager.transform.parent = TrainManager.DefaultParent;
             }
             train.RespawnDefault();
+            train.m_Speed = _defaultSpeed;
             indexCheck = 1;
             StartPoint();
-            pathTrain_1.m_Waypoints =generatedWaypoints.ToArray();
+            pathTrain_1.m_Waypoints =_defaultWaypoint;
             pathTrain_1.InvalidateDistanceCache();
+            train.UpdateStateArrowIndicator();
         }
 
         private void StartPoint()
@@ -118,8 +124,19 @@ namespace IsoMatrix.Scripts.Rail
             }
             else
             {
+                TrainPath.Waypoint[] oldWaypoints = currentCinePath.m_Waypoints;
+                if (oldWaypoints.SequenceEqual(cine))
+                {
+                    return;
+                }
+
+                bool oldStage = train.canRun;
+                train.canRun = false;
                 currentCinePath.m_Waypoints =cine;
                 currentCinePath.InvalidateDistanceCache();
+                float positionClosestPoint = currentCinePath.FindClosestPoint(train.transform.position, 10, -1, 10);
+                train.m_Position = positionClosestPoint;
+                train.canRun = oldStage;
             }
         }
 
@@ -155,21 +172,14 @@ namespace IsoMatrix.Scripts.Rail
                             RailGroupManager railGroupManager = rail.gameObject.GetComponent<RailGroupManager>();
                             if (railGroupManager)
                             {
-                                RailType typeTrainSave = RailType.none;
-                                foreach (var dir in railGroupManager.DirTrain)
-                                {
-                                    if (dir.Key.name == TrainManager.name )
-                                    {
-                                        typeTrainSave = dir.Value;
-                                    }
-                                }
-
-                                if (typeTrainSave == RailType.none)
-                                {
-                                    RailManager railManager = rail.gameObject.GetComponent<RailManager>();
-                                    typeTrainSave = railManager.railType;
-                                    
-                                }
+                                List<RailType> typeTrainSaves = new List<RailType>();
+                                typeTrainSaves = railGroupManager.DirTrain.LastOrDefault(x => x.Key.name == TrainManager.name).Value;
+                                //
+                                // if (typeTrainSave == RailType.none)
+                                // {
+                                //     RailManager railManager = rail.gameObject.GetComponent<RailManager>();
+                                //     typeTrainSave = railManager.railType;
+                                // }
                                 Dictionary<RailType, Vector2Int> indexPointMap = new Dictionary<RailType, Vector2Int>
                                 {
                                     { RailType.top_right, GameConstant.TOP_RIGHT_POINT },
@@ -179,33 +189,43 @@ namespace IsoMatrix.Scripts.Rail
                                     { RailType.right, GameConstant.RIGHT_POINT },
                                     { RailType.top, GameConstant.TOP_POINT }
                                 };
-                                if (indexPointMap.TryGetValue(typeTrainSave, out Vector2Int indexPoint))
+                                if (typeTrainSaves != null)
                                 {
-                                    TrainPath.Waypoint moreWP1 = rail.m_Waypoints[indexPoint.x];
-                                    Vector3 pos4= moreWP1.position + rail.transform.localPosition;
-                                    
-                                    TrainPath.Waypoint moreWP2 = rail.m_Waypoints[indexPoint.y];
-                                    Vector3 pos5= moreWP2.position + rail.transform.localPosition;
-                                    if (pos4 == pos1)
+                                    for (int i = typeTrainSaves.Count-1; i >=0; i--)
                                     {
-                                        AddWaypoint(rail, indexPoint.y);
-                                        ChechWaypoint = rail;
-                                        indexCheck = indexPoint.y;
-                                        RailCheck();
-                                        return;
-                                    }else if (pos5 == pos1)
-                                    {
-                                        AddWaypoint(rail, indexPoint.x);
-                                        ChechWaypoint = rail;
-                                        indexCheck = indexPoint.x;
-                                        RailCheck();
-                                        return;
+                                        if (indexPointMap.TryGetValue(typeTrainSaves[i], out Vector2Int indexPoint))
+                                        {
+                                            TrainPath.Waypoint moreWP1 = rail.m_Waypoints[indexPoint.x];
+                                            Vector3 pos4= moreWP1.position + rail.transform.localPosition;
+                                            
+                                            TrainPath.Waypoint moreWP2 = rail.m_Waypoints[indexPoint.y];
+                                            Vector3 pos5= moreWP2.position + rail.transform.localPosition;
+                                            if (pos4 == pos1)
+                                            {
+                                                AddWaypoint(rail, indexPoint.y);
+                                                ChechWaypoint = rail;
+                                                indexCheck = indexPoint.y;
+                                                RailCheck();
+                                                return;
+                                            }else if (pos5 == pos1)
+                                            {
+                                                AddWaypoint(rail, indexPoint.x);
+                                                ChechWaypoint = rail;
+                                                indexCheck = indexPoint.x;
+                                                RailCheck();
+                                                return;
+                                            }
+                                        }
                                     }
                                 }
+                                else
+                                {
+                                    AutoMove(rail, pos1);
+                                }
+                                
                             }
                         }
-
-                        if (pos2 == pos1)
+                        else if (pos2 == pos1)
                         {
                             AddWaypoint(rail, 1);
                             ChechWaypoint = rail;
@@ -225,6 +245,51 @@ namespace IsoMatrix.Scripts.Rail
             }
         }
 
+        void AutoMove(TrainPath rail, Vector3 pos1)
+        {
+            Vector2Int indexPoint = GameConstant.TOP_POINT;
+            TrainPath.Waypoint moreWP1 = rail.m_Waypoints[indexPoint.x];
+            Vector3 pos4= moreWP1.position + rail.transform.localPosition;
+            
+            TrainPath.Waypoint moreWP2 = rail.m_Waypoints[indexPoint.y];
+            Vector3 pos5= moreWP2.position + rail.transform.localPosition;
+            if (pos4 == pos1)
+            {
+                AddWaypoint(rail, indexPoint.y);
+                ChechWaypoint = rail;
+                indexCheck = indexPoint.y;
+                RailCheck();
+                return;
+            }else if (pos5 == pos1)
+            {
+                AddWaypoint(rail, indexPoint.x);
+                ChechWaypoint = rail;
+                indexCheck = indexPoint.x;
+                RailCheck();
+                return;
+            }
+            indexPoint = GameConstant.RIGHT_POINT;
+            moreWP1 = rail.m_Waypoints[indexPoint.x];
+            pos4= moreWP1.position + rail.transform.localPosition;
+        
+            moreWP2 = rail.m_Waypoints[indexPoint.y];
+            pos5= moreWP2.position + rail.transform.localPosition;
+            if (pos4 == pos1)
+            {
+                AddWaypoint(rail, indexPoint.y);
+                ChechWaypoint = rail;
+                indexCheck = indexPoint.y;
+                RailCheck();
+                return;
+            }else if (pos5 == pos1)
+            {
+                AddWaypoint(rail, indexPoint.x);
+                ChechWaypoint = rail;
+                indexCheck = indexPoint.x;
+                RailCheck();
+                return;
+            }
+        }
         void AddWaypoint(TrainPath child, int idx, bool start = false)
         {
             if(!child.GetComponent<TrainPath>()) return;
@@ -235,7 +300,7 @@ namespace IsoMatrix.Scripts.Rail
             var changeVar = 1;
             if (!start)
             {
-                if (idx == 0)
+                if (idx == 0 || idx == 2 || idx == 6)
                 {
                     changeVar = -1;
                 }
@@ -249,7 +314,8 @@ namespace IsoMatrix.Scripts.Rail
         {
             if (e.type == TrainActionEventType.Run)
             {
-                DragStopped();
+                train.canRun = true;
+                TrainManager.StartRun();
             }
             if (e.type == TrainActionEventType.Update)
             {

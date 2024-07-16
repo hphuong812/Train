@@ -80,9 +80,9 @@ public class LocomotiveManager : MonoBehaviour, IEventListener<TrainActionEvent>
             other.gameObject.SetActive(false);
             Destroy(gameObject);
             GameConfig.Instance.CurrentLevel += 1;
-            if (GameConfig.Instance.CurrentLevel >14)
+            if (GameConfig.Instance.CurrentLevel >GameConstant.MAX_LEVEL -1)
             {
-                GameConfig.Instance.CurrentLevel = Random.Range(0, 14);
+                GameConfig.Instance.CurrentLevel = Random.Range(0, GameConstant.MAX_LEVEL-1);
             }
             LevelEvent.Trigger(LevelEventType.NextLevel, GameConfig.Instance.CurrentLevel);
 

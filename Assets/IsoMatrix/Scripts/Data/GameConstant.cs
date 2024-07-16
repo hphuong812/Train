@@ -10,7 +10,6 @@ namespace IsoMatrix.Scripts.Data
         public const string LEVEL_RELOAD = "levelWin";
         public const string CURRENT_LEVEL_ID_KEY = "currentLevelID";
         public const string TUTORIAL_COMPLETE = "tutorialComplete";
-        public const string CURRENT_CAT_SKIN_ID_KEY = "skinCat";
         public const string LEVEL_DATA_KEY = "levelData";
 
         public const string SCENE_NAME_BOOT = "scene_boot";
@@ -19,7 +18,6 @@ namespace IsoMatrix.Scripts.Data
         public const string WALLET_KEY = "wallet";
         public const string COIN_KEY = "coins";
 
-        public const string CAT_SKIN_KEY = "CatSkin";
         public const string MATERIAL_KEY = "materialKey";
 
         public const string ADS_CONFIG_KEY = "adsConfig";
@@ -35,5 +33,7 @@ namespace IsoMatrix.Scripts.Data
         public static readonly Vector2Int BOTTOM_RIGHT_POINT = new Vector2Int(4, 5);
         public static readonly Vector2Int RIGHT_POINT = new Vector2Int(1, 2);
         public static readonly Vector2Int TOP_POINT = new Vector2Int(3, 4);
+
+        public const int MAX_LEVEL = 9;
     }
 }

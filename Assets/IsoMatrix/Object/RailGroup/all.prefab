@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -7801977627106349057}
   - component: {fileID: 2419069494498638046}
   - component: {fileID: 6665180129818833097}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: all
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ MonoBehaviour:
     tangent: {x: 0, y: 0, z: -0.55}
     roll: 0
   - position: {x: 0, y: 0, z: 0.5}
-    tangent: {x: 0, y: 0, z: 0.3}
+    tangent: {x: 0, y: 0, z: 0}
     roll: 0
   - position: {x: 0.5, y: 0, z: 0}
     tangent: {x: 0.55, y: 0, z: 0}
@@ -209,13 +209,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3764043f7cb5749489535dc1fe330a6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listRail:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!1001 &863236741914900627
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -809,7 +802,7 @@ PrefabInstance:
     - target: {fileID: 5420258282300326263, guid: 8ed20e6078d4c4c0bb80ace70cdd5a95,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5420258282300326263, guid: 8ed20e6078d4c4c0bb80ace70cdd5a95,
         type: 3}

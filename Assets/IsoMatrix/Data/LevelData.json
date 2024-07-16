@@ -62,7 +62,7 @@
       "name": "lv9",
       "levelKey" : "Level_9",
       "maxRail": 6,
-      "trainOrder":["Num1","Num2"]
+      "trainOrder":["Num1","Num2","Num3"]
     },
     {
       "id": 9,
