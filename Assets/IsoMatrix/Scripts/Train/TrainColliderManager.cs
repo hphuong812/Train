@@ -1,5 +1,6 @@
 using System;
 using ADN.Meta.Core;
+using IsoMatrix.Scripts.Rail;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,6 +13,7 @@ namespace IsoMatrix.Scripts.Train
         [SerializeField] private LayerMask locomotiveLayerMask;
         [SerializeField] private LayerMask deadZoneLayerMask;
         [SerializeField] private LayerMask speedUpZoneLayerMask;
+        [SerializeField] private LayerMask railLayerMask;
 
         [SerializeField] private TrainController _trainController;
         [SerializeField] private TrainManager _trainManager;
@@ -93,6 +95,24 @@ namespace IsoMatrix.Scripts.Train
             }
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (LayerMarkChecker.LayerInLayerMask(other.gameObject.layer, railLayerMask))
+            {
+                RailManager railManager = other.gameObject.GetComponent<RailManager>();
+                railManager.isFix = true;
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (LayerMarkChecker.LayerInLayerMask(other.gameObject.layer, railLayerMask))
+            {
+                RailManager railManager = other.gameObject.GetComponent<RailManager>();
+                railManager.isFix = false;
+            }
+        }
+
         public void ResetTrain()
         {
             TrainActionEvent.Trigger(TrainActionEventType.Reset);
@@ -104,7 +124,18 @@ namespace IsoMatrix.Scripts.Train
             {
                 locomotiveMatched = false;
                 TrainReset.Invoke();
+                if (_trainManager.TrainName == TrainName.TNT)
+                {
+                    _trainController.RespawnDefault();
+                    _trainController.m_Speed = 1;
+                    _trainController.canRun = true;
+                }
             }
+        }
+
+        public void MoveTrain()
+        {
+            _trainController.canRun = true;
         }
     }
 }

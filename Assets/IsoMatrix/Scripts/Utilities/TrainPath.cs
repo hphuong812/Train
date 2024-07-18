@@ -81,7 +81,7 @@ namespace IsoMatrix.Scripts.Utilities
         public override int DistanceCacheSampleStepsPerSegment => m_Resolution;
 
         /// <summary>Returns normalized position</summary>
-        float GetBoundingIndices(float pos, out int indexA, out int indexB)
+        public float GetBoundingIndices(float pos, out int indexA, out int indexB)
         {
             pos = StandardizePos(pos);
             int rounded = Mathf.RoundToInt(pos);

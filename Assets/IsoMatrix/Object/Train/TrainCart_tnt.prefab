@@ -619,6 +619,9 @@ MonoBehaviour:
   speedUpZoneLayerMask:
     serializedVersion: 2
     m_Bits: 262144
+  railLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   _trainController: {fileID: 8445934198648254954}
   _trainManager: {fileID: 370688721217292018}
   TrainReset:
@@ -726,7 +729,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2600972219df64a9e83d31d4430f871c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TrainName: 3
+  TrainName: 4
   DefaultParent: {fileID: 0}
   OnRun:
     m_PersistentCalls:

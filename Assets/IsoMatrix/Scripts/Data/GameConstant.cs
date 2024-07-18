@@ -34,6 +34,6 @@ namespace IsoMatrix.Scripts.Data
         public static readonly Vector2Int RIGHT_POINT = new Vector2Int(1, 2);
         public static readonly Vector2Int TOP_POINT = new Vector2Int(3, 4);
 
-        public const int MAX_LEVEL = 9;
+        public const int MAX_LEVEL = 3;
     }
 }

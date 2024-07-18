@@ -61,6 +61,14 @@ namespace IsoMatrix.Scripts.Train
         private void Start()
         {
             UpdateStateArrowIndicator();
+            TrainManager trainManager = gameObject.GetComponent<TrainManager>();
+            if (trainManager)
+            {
+                if (trainManager.TrainName == TrainName.TNT)
+                {
+                    // canRun = true;
+                }
+            }
         }
         
 
@@ -174,7 +182,11 @@ namespace IsoMatrix.Scripts.Train
             {
                 m_Position = m_Path.StandardizeUnit(distanceAlongPath, m_PositionUnits);
                 transform.position = m_Path.EvaluatePositionAtUnit(m_Position, m_PositionUnits);
-                // Debug.Log(m_Path.EvaluatePosition(m_Position));
+                float pos = m_Path.GetBoundingIndices(m_Position, out var indexA, out var indexB);
+                    // Debug.Log(m_Path.m_Waypoints[indexB].position);
+                if (indexA == indexB)
+                {
+                }
                 transform.rotation = m_Path.EvaluateOrientationAtUnit(m_Position, m_PositionUnits);
             }
         }

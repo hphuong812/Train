@@ -130,15 +130,47 @@ namespace IsoMatrix.Scripts.TileMap
 
                 if (!hasFirst && !tileManager.isBlock)
                 {
+                    var index = -1;
                     firstTileManager = tileManager;
                     firstTileManager.previous = tileManager.previous;
                     hasFirst = true;
+                    Vector3 firstRailPos = new Vector3(firstTileManager.GridLocation.x, 1,
+                        firstTileManager.GridLocation.y);
+                    var cout = 0;
+                    RailType typeTapRail = RailType.none;
+                    RailType typeChange = RailType.none;
+                    for (int i = 0; i < listRail.Count; i++)
+                    {
+                        if (listRail[i].gameObject.transform.localPosition == new Vector3(tileManager.GridLocation.x,1,tileManager.GridLocation.y))
+                        {
+                            typeTapRail = listRail[i].railType;
+                            index = i;
+                            cout++;
+                            break;
+                        }
+                    }
+
+                    if (cout>0 && !listRail[index].isFix)
+                    {
+                        // typeChange = CheckTouchGroupRail(typeTapRail);
+                        // if (typeChange != RailType.none && index != -1)
+                        // {
+                        //     string typeChangeString = "rail_" + typeChange;
+                        //     Destroy(listRail[index].gameObject);
+                        //     listRail.RemoveAt(index);
+                        //     AddNewRail(typeChangeString, firstRailPos);
+                        // }
+                        if (typeTapRail == RailType.all)
+                        {
+                            listRail[index].gameObject.transform.Rotate(0,90,0);
+                        }
+                    }
                 }
                 else
                 {
                     if (path.Count ==0)
                     {
-                        path = _pathFinder.FindPath(firstTileManager, tileManager);
+                        // path = _pathFinder.FindPath(firstTileManager, tileManager);
                     }
                 }
                 map = MapManager.Instance.map;
@@ -155,7 +187,7 @@ namespace IsoMatrix.Scripts.TileMap
             }
             if (path.Count>0)
             {
-                ChangePathType();
+                // ChangePathType();
             }
         }
         public void AddNewRail(string type, Vector3 pos)
@@ -197,34 +229,26 @@ namespace IsoMatrix.Scripts.TileMap
             {
                 switch (typeRail)
                 {
-                    case RailType.right_bottom_left:
-                        return RailType.right_bottom_right;
                     case RailType.right_bottom_right:
-                        return RailType.right_bottom_left ;
+                        return RailType.right_bottom_left;
+                    case RailType.right_bottom_left:
+                        return RailType.right_top_left ;
                     case RailType.right_top_left:
                         return RailType.right_top_right;
                     case RailType.right_top_right:
-                        return RailType.right_top_left;
-                    case RailType.top_bottom_left:
-                        return RailType.top_top_left;
-                    case RailType.top_bottom_right:
-                        return RailType.top_top_right;
-                    case RailType.top_top_left:
-                        return RailType.top_bottom_left;
-                    case RailType.top_top_right:
-                        return RailType.top_bottom_right;
-                    case RailType.top:
                         return RailType.right;
                     case RailType.right:
+                        return RailType.right_bottom_right;
+                    case RailType.top_bottom_left:
+                        return RailType.top_top_left;
+                    case RailType.top_top_left:
+                        return RailType.top_top_right;
+                    case RailType.top_top_right:
+                        return RailType.top_bottom_right;
+                    case RailType.top_bottom_right:
                         return RailType.top;
-                    case RailType.bottom_right:
-                        return RailType.bottom_left;
-                    case RailType.bottom_left:
-                        return RailType.bottom_right;
-                    case RailType.top_right:
-                        return RailType.top_left;
-                    case RailType.top_left:
-                        return RailType.top_right;
+                    case RailType.top:
+                        return RailType.top_bottom_left;
                 }
             }
 
@@ -324,8 +348,11 @@ namespace IsoMatrix.Scripts.TileMap
             {
                 if (trainCheck)
                 {
-                    TrainController trainController = trainCheck.gameObject.GetComponent<TrainController>();
-                    trainController.canRun = !trainController.canRun;
+                    if (trainCheck.TrainName != TrainName.TNT)
+                    {
+                        TrainController trainController = trainCheck.gameObject.GetComponent<TrainController>();
+                        trainController.canRun = !trainController.canRun;
+                    }
                 }
                 trainCheck = null;
                 hasFirst = false;

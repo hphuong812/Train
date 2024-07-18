@@ -13,7 +13,7 @@
       "name": "lv2",
       "levelKey" : "Level_2",
       "maxRail": 7,
-      "trainOrder":["Num1"]
+      "trainOrder":["Num1","Num2"]
     },
     {
       "id": 2,
